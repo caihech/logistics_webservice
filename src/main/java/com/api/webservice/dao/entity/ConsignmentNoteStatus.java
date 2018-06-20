@@ -10,15 +10,17 @@ import org.springframework.stereotype.Component;
 import javax.persistence.*;
 import java.util.List;
 
+
 /**
  * 委托单_状态表
- * Update by h.cai on 2018/6/19.
+ * 状态:
+ * 1 无   创建人 和 管理可以改动、删除；
+ * 2 收货 只能管理员修改1=2  ==2的时候后页面信息不可更改
+ * 3 拒收 只能管理员修改1=3  ==3的时候后页面信息不可更改
+ * 4 已删除，只能管理员 有2=4 ，前提，没有加入到批次里的数据；
  *
- *  id :
- *  1 无   创建人 和 管理可以改动、删除；
- *  2 收货 只能管理员修改1=2  ==2的时候后页面信息不可更改
- *  3 拒收 只能管理员修改1=3  ==3的时候后页面信息不可更改
- *  4 已删除，只能管理员 有2=4 ，前提，没有加入到批次里的数据；
+ * @author h.cai
+ * @date 2018/06/20
  */
 @Component
 @Entity
@@ -36,7 +38,7 @@ public class ConsignmentNoteStatus extends BaseEntity {
     /**
      * 名称
      */
-    @Column(name = "name", length = 80, nullable = false)
+    @Column(name = "name", length = 80, nullable = false, unique = true)
     public String getName() {
         return name;
     }
@@ -59,7 +61,7 @@ public class ConsignmentNoteStatus extends BaseEntity {
 
 
     /**
-     *  batch list
+     * batch list
      */
     @JsonInclude
     @OneToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "consignmentNoteStatus")

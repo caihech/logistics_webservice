@@ -15,9 +15,12 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
 
+
 /**
  * 用户表
- * Update by h.cai on 2017/8/16
+ *
+ * @author h.cai
+ * @date 2018/06/20
  */
 @Component
 @Entity
@@ -42,9 +45,8 @@ public class User extends BaseEntity {
     private String remark;
     private String companyName;
 
-    private List<ConsignmentNote> consignmentNotes;
-    private List<LoginLog> loginLogs;
-
+   // private List<ConsignmentNote> consignmentNotes;
+    //  private List<LoginLog> loginLogs;
 
 
     /**
@@ -62,7 +64,6 @@ public class User extends BaseEntity {
     public void setRole(Role role) {
         this.role = role;
     }
-
 
 
     /**
@@ -261,31 +262,32 @@ public class User extends BaseEntity {
         this.companyName = companyName;
     }
 
-    /**
-     * ConsignmentNote list
-     */
-    @JsonInclude
-    @OneToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "user")
-    @LazyCollection(value = LazyCollectionOption.EXTRA)
-    public List<ConsignmentNote> getConsignmentNotes() {
-        return consignmentNotes;
-    }
+//    /**
+//     * ConsignmentNote list
+//     */
+//    @JsonIgnore
+//    @OneToMany(targetEntity = ConsignmentNote.class, cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "User")
+//    @LazyCollection(value = LazyCollectionOption.EXTRA)
+//    public List<ConsignmentNote> getConsignmentNotes() {
+//        return consignmentNotes;
+//    }
+//
+//    public void setConsignmentNotes(List<ConsignmentNote> consignmentNotes) {
+//        this.consignmentNotes = consignmentNotes;
+//    }
 
-    public void setConsignmentNotes(List<ConsignmentNote> consignmentNotes) {
-        this.consignmentNotes = consignmentNotes;
-    }
 
-    /**
-     * login_log list
-     */
-    @JsonInclude
-    @OneToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "user")
-    @LazyCollection(value = LazyCollectionOption.EXTRA)
-    public List<LoginLog> getLoginLogs() {
-        return loginLogs;
-    }
-
-    public void setLoginLogs(List<LoginLog> loginLogs) {
-        this.loginLogs = loginLogs;
-    }
+//    /**
+//     * login_log list
+//     */
+//    @JsonInclude
+//    @OneToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "login_user")
+//    @LazyCollection(value = LazyCollectionOption.EXTRA)
+//    public List<LoginLog> getLoginLogs() {
+//        return loginLogs;
+//    }
+//
+//    public void setLoginLogs(List<LoginLog> loginLogs) {
+//        this.loginLogs = loginLogs;
+//    }
 }

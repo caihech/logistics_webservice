@@ -1,21 +1,20 @@
 package com.api.webservice.dao.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.voodoodyne.jackson.jsog.JSOGGenerator;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.sql.Timestamp;
-import java.util.List;
+
 
 /**
  * 登录记录表
- * Update by h.cai on 2018/6/19.
+
+ * @author h.cai
+ * @date 2018/06/20
  */
 @Component
 @Entity
@@ -26,15 +25,12 @@ public class LoginLog extends BaseEntity {
     private String code;
     private String ip;
     private String username;
-    /**
-     * 登录状态码 NULL 无 0 失败 1成功 2锁定
-     */
     private Integer state;
     private String address;
     private String client;
     private String token;
     private Timestamp tokenExpired;
-    private User user;
+   // private User user;
 
     @Column(name = "code", length = 6)
     public String getCode() {
@@ -63,6 +59,9 @@ public class LoginLog extends BaseEntity {
         this.username = username;
     }
 
+    /**
+     * 登录状态码 NULL 无 0 失败 1成功 2锁定
+     */
     @Column(name = "state", nullable = true)
     public Integer getState() {
         return state;
@@ -108,19 +107,19 @@ public class LoginLog extends BaseEntity {
         this.tokenExpired = tokenExpired;
     }
 
-    /**
-     * FK_User
-     */
-    @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true)
-    @LazyToOne(value = LazyToOneOption.FALSE)
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+//    /**
+//     * FK_User
+//     */
+//    @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true)
+//    @LazyToOne(value = LazyToOneOption.FALSE)
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
 
 
 }

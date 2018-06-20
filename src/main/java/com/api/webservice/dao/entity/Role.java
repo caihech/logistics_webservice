@@ -2,7 +2,6 @@ package com.api.webservice.dao.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.voodoodyne.jackson.jsog.JSOGGenerator;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -11,9 +10,12 @@ import org.springframework.stereotype.Component;
 import javax.persistence.*;
 import java.util.List;
 
+
 /**
- * 批次_状态表
- * Update by h.cai on 2018/6/19.
+ * 角色表
+
+ * @author h.cai
+ * @date 2018/06/20
  */
 @Component
 @Entity
