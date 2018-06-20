@@ -12,9 +12,10 @@ import java.util.List;
 
 
 /**
- * 用户控制器
+ * 用户
  *
- * @author
+ * @author h.cai
+ * @date 2018/06/20
  */
 @CrossOrigin
 @RestController

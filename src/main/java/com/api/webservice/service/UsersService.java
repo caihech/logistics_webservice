@@ -14,9 +14,10 @@ import java.sql.Timestamp;
 import java.util.List;
 
 /**
- * 用户 user
+ * 用户
  *
- * @author zuofei
+ * @author h.cai
+ * @date 2018/06/20
  */
 @Service
 public class UsersService extends BaseService {
