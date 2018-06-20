@@ -15,7 +15,7 @@ import java.util.List;
 
 
 /**
- * 运输表
+ * 车辆表
  *
  * @author h.cai
  * @date 2018/06/20
