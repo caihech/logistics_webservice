@@ -15,9 +15,10 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
- * 父类-控制器
  *
- * @author zuofei
+ *
+ * @author h.cai
+ * @date 2018/06/20
  */
 public abstract class BaseController {
     protected Logger log;
