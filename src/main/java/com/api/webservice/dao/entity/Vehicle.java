@@ -33,8 +33,8 @@ public class Vehicle extends BaseEntity {
     private Timestamp startDate;
     private Timestamp endDate;
 
-    //private VehicleStatus vehicleStatus;
-  //  private List<ConsignmentNote> consignmentNotes;
+    private VehicleStatus vehicleStatus;
+    private List<ConsignmentNote> consignmentNotes;
 
 
     /**
@@ -115,30 +115,30 @@ public class Vehicle extends BaseEntity {
      *
      * @return
      */
-//    @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
-//    @JoinColumn(name = "vehicle_status_id", referencedColumnName = "id", nullable = false)
-//    @LazyToOne(value = LazyToOneOption.FALSE)
-//    public VehicleStatus getVehicleStatus() {
-//        return vehicleStatus;
-//    }
-//
-//    public void setVehicleStatus(VehicleStatus vehicleStatus) {
-//        this.vehicleStatus = vehicleStatus;
-//    }
+    @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "vehicle_status_id", referencedColumnName = "id", nullable = false)
+    @LazyToOne(value = LazyToOneOption.FALSE)
+    public VehicleStatus getVehicleStatus() {
+        return vehicleStatus;
+    }
+
+    public void setVehicleStatus(VehicleStatus vehicleStatus) {
+        this.vehicleStatus = vehicleStatus;
+    }
 
 
     /**
      * consignmentNotes_list
      */
-//    @JsonInclude
-//    @OneToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "vehicle")
-//    @LazyCollection(value = LazyCollectionOption.EXTRA)
-//    public List<ConsignmentNote> getConsignmentNotes() {
-//        return consignmentNotes;
-//    }
-//
-//    public void setConsignmentNotes(List<ConsignmentNote> consignmentNotes) {
-//        this.consignmentNotes = consignmentNotes;
-//    }
+    @JsonInclude
+    @OneToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "vehicle")
+    @LazyCollection(value = LazyCollectionOption.EXTRA)
+    public List<ConsignmentNote> getConsignmentNotes() {
+        return consignmentNotes;
+    }
+
+    public void setConsignmentNotes(List<ConsignmentNote> consignmentNotes) {
+        this.consignmentNotes = consignmentNotes;
+    }
 
 }

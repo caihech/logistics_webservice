@@ -45,7 +45,7 @@ public class User extends BaseEntity {
     private String remark;
     private String companyName;
 
-   // private List<ConsignmentNote> consignmentNotes;
+    private List<ConsignmentNote> consignmentNotes;
     //  private List<LoginLog> loginLogs;
 
 
@@ -262,19 +262,19 @@ public class User extends BaseEntity {
         this.companyName = companyName;
     }
 
-//    /**
-//     * ConsignmentNote list
-//     */
-//    @JsonIgnore
-//    @OneToMany(targetEntity = ConsignmentNote.class, cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "User")
-//    @LazyCollection(value = LazyCollectionOption.EXTRA)
-//    public List<ConsignmentNote> getConsignmentNotes() {
-//        return consignmentNotes;
-//    }
-//
-//    public void setConsignmentNotes(List<ConsignmentNote> consignmentNotes) {
-//        this.consignmentNotes = consignmentNotes;
-//    }
+    /**
+     * ConsignmentNote list
+     */
+    @JsonIgnore
+    @OneToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "user")
+    @LazyCollection(value = LazyCollectionOption.EXTRA)
+    public List<ConsignmentNote> getConsignmentNotes() {
+        return consignmentNotes;
+    }
+
+    public void setConsignmentNotes(List<ConsignmentNote> consignmentNotes) {
+        this.consignmentNotes = consignmentNotes;
+    }
 
 
 //    /**

@@ -67,9 +67,9 @@ public class ConsignmentNote extends BaseEntity {
     public String remark;
     public int printCount;
 
-    // private User user;
+    private User user;
     private ConsignmentNoteStatus consignmentNoteStatus;
-    //  private Vehicle vehicle;
+    private Vehicle vehicle;
 
     /**
      * 订单编号 ，8位 ，唯一约束 ，必填
@@ -402,21 +402,21 @@ public class ConsignmentNote extends BaseEntity {
     }
 
 
-//    /**
-//     * fk_user_id
-//     *
-//     * @return
-//     */
-//    @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-//    @LazyToOne(value = LazyToOneOption.FALSE)
-//    public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
+    /**
+     * fk_user_id
+     *
+     * @return
+     */
+    @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @LazyToOne(value = LazyToOneOption.FALSE)
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
 
     /**
@@ -441,15 +441,15 @@ public class ConsignmentNote extends BaseEntity {
      *
      * @return
      */
-//    @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
-//    @JoinColumn(name = "vehicle_id", referencedColumnName = "id")
-//    @LazyToOne(value = LazyToOneOption.FALSE)
-//    public Vehicle getVehicle() {
-//        return vehicle;
-//    }
-//
-//    public void setVehicle(Vehicle vehicle) {
-//        this.vehicle = vehicle;
-//    }
+    @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "vehicle_id", referencedColumnName = "id")
+    @LazyToOne(value = LazyToOneOption.FALSE)
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
+    }
 
 }
