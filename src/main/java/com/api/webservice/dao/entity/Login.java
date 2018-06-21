@@ -7,20 +7,21 @@ import org.springframework.stereotype.Component;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.sql.Timestamp;
 
 
 /**
  * 登录记录表
-
+ *
  * @author h.cai
  * @date 2018/06/20
  */
 @Component
 @Entity
-@Table(name = "login_log")
+@Table(name = "login")
 @JsonIdentityInfo(generator = JSOGGenerator.class)
-public class LoginLog extends BaseEntity {
+public class Login extends BaseEntity {
 
     private String code;
     private String ip;
@@ -30,7 +31,7 @@ public class LoginLog extends BaseEntity {
     private String client;
     private String token;
     private Timestamp tokenExpired;
-   // private User user;
+    private String password;
 
     @Column(name = "code", length = 6)
     public String getCode() {
@@ -60,9 +61,9 @@ public class LoginLog extends BaseEntity {
     }
 
     /**
-     * 登录状态码 NULL 无 0 失败 1成功 2锁定
+     * 登录状态码  0=未使用， 1==成功 ， 2==失败 ， 3==锁定
      */
-    @Column(name = "state", nullable = true)
+    @Column(name = "state", columnDefinition = "int default 0 ")
     public Integer getState() {
         return state;
     }
@@ -89,7 +90,7 @@ public class LoginLog extends BaseEntity {
         this.client = client;
     }
 
-    @Column(name = "token", length = 36, nullable = true)
+    @Column(name = "token", length = 36, nullable = false, unique = true, updatable = false)
     public String getToken() {
         return token;
     }
@@ -107,19 +108,12 @@ public class LoginLog extends BaseEntity {
         this.tokenExpired = tokenExpired;
     }
 
-//    /**
-//     * FK_User
-//     */
-//    @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true)
-//    @LazyToOne(value = LazyToOneOption.FALSE)
-//    public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
+    @Transient
+    public String getPassword() {
+        return password;
+    }
 
-
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

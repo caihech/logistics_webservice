@@ -25,7 +25,6 @@ public class Version extends BaseController {
     private SystemConfig systemConfig;
 
 
-
     /**
      * 得到版本信息
      *
@@ -42,9 +41,8 @@ public class Version extends BaseController {
         Calendar calendar = Calendar.getInstance();
         versionMap.put("time", String.valueOf(calendar.getTimeInMillis()));
 
-        if (getUser() != null) {
-            versionMap.put("serverIP", request.getLocalAddr());
-        }
+        versionMap.put("serverIP", request.getLocalAddr());
+
         return versionMap;
     }
 }

@@ -1,6 +1,6 @@
 package com.api.webservice.dao.repository;
 
-import com.api.webservice.dao.entity.LoginLog;
+import com.api.webservice.dao.entity.Login;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +12,14 @@ import org.springframework.stereotype.Repository;
  * @date 2018/06/20
  */
 @Repository
-public interface LoginLogRepository extends JpaRepository<LoginLog, Long> {
+public interface LoginLogRepository extends JpaRepository<Login, Long> {
 
+    /**
+     * 通过Token查询数据
+     *
+     * @param token
+     * @return
+     */
+    Login findByToken(String token);
 
 }

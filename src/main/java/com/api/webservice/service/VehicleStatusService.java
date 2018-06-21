@@ -43,7 +43,7 @@ public class VehicleStatusService extends BaseService {
         VehicleStatus vehicleStatus = vehicleStatusRepository.findOne(id);
 
         if (vehicleStatus == null) {
-            log.error("vehicleStatus is not find.");
+            log.error("404 vehicleStatus is not find.");
             throw new SC_NOT_FOUND();
         }
 

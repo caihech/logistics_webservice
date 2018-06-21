@@ -46,7 +46,6 @@ public class User extends BaseEntity {
     private String companyName;
 
     private List<ConsignmentNote> consignmentNotes;
-    //  private List<LoginLog> loginLogs;
 
 
     /**
@@ -276,18 +275,4 @@ public class User extends BaseEntity {
         this.consignmentNotes = consignmentNotes;
     }
 
-
-//    /**
-//     * login_log list
-//     */
-//    @JsonInclude
-//    @OneToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "login_user")
-//    @LazyCollection(value = LazyCollectionOption.EXTRA)
-//    public List<LoginLog> getLoginLogs() {
-//        return loginLogs;
-//    }
-//
-//    public void setLoginLogs(List<LoginLog> loginLogs) {
-//        this.loginLogs = loginLogs;
-//    }
 }

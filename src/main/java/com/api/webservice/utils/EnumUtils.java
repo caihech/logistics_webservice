@@ -6,9 +6,8 @@ package com.api.webservice.utils;
 public class EnumUtils {
 
     public enum Role {
-        INVALID(0, "无效"),
         USER(1, "用户"),
-        AUDIT(2, "审核员"),
+        MEMBER(2, "会员"),
         ADMINISTRATOR(3, "管理员");
 
         public long key;

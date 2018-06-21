@@ -235,7 +235,7 @@ public class ConsignmentNote extends BaseEntity {
         return premium;
     }
 
-    public void setPremium() {
+    public void setPremium(BigDecimal premium) {
         BigDecimal interest = new BigDecimal("0.005");
         this.premium = getInsurance().multiply(interest);
     }

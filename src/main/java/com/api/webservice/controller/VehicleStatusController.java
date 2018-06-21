@@ -4,6 +4,7 @@ import com.api.webservice.annotation.UserAnnotation;
 import com.api.webservice.dao.entity.VehicleStatus;
 import com.api.webservice.service.VehicleStatusService;
 import com.api.webservice.utils.EnumUtils;
+import com.api.webservice.utils.exception.SC_NOT_FOUND;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,9 +50,12 @@ public class VehicleStatusController extends BaseController {
     @UserAnnotation(roles = {EnumUtils.Role.ADMINISTRATOR, EnumUtils.Role.USER})
     @RequestMapping(value = "/{id}", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.GET)
     public VehicleStatus get(@PathVariable("id") Long id) throws Exception {
-        VehicleStatus vehicleStatus = vehicleStatusService.get(id);
-        setHttpResponseStatus(HttpServletResponse.SC_OK);
-        return vehicleStatus;
+
+        throw new SC_NOT_FOUND();
+
+//        VehicleStatus vehicleStatus = vehicleStatusService.get(id);
+//        setHttpResponseStatus(HttpServletResponse.SC_OK);
+//        return vehicleStatus;
     }
 
 }

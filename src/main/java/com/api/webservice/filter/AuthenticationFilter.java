@@ -1,5 +1,7 @@
 package com.api.webservice.filter;
 
+import com.api.webservice.dao.entity.User;
+import com.api.webservice.service.LoginService;
 import com.api.webservice.service.UsersService;
 import com.api.webservice.utils.exception.CustomException;
 import com.api.webservice.utils.exception.SC_FORBIDDEN;
@@ -21,9 +23,8 @@ public class AuthenticationFilter implements Filter {
 
     @Autowired
     private UsersService userService;
-
-    private String apiKey;
-    private String packageName;
+    @Autowired
+    private LoginService loginService;
 
     public AuthenticationFilter() {
         this.log = LogManager.getLogger(this.getClass().getName());
@@ -37,17 +38,21 @@ public class AuthenticationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         log.info("doFilter " + request.getRemoteHost() + " " + ((HttpServletRequest) request).getMethod());
-        String url = ((HttpServletRequest) request).getRequestURI();
+
+        try {
+
+            String url = ((HttpServletRequest) request).getRequestURI();
 
 
-        String authorization = ((HttpServletRequest) request).getHeader("Authorization");
-        if (null != authorization) {
-            //获取token
-            int tokenIndex = authorization.indexOf("Token ");
-            if (-1 != tokenIndex) {
-                tokenIndex = tokenIndex + "Token ".length();
-                String token = authorization.substring(tokenIndex);
+            String authorization = ((HttpServletRequest) request).getHeader("Authorization");
+            if (authorization != null) {
+                //获取token
+                int tokenIndex = authorization.indexOf("Token ");
+                if (tokenIndex != -1) {
+                    tokenIndex = tokenIndex + "Token ".length();
+                    String token = authorization.substring(tokenIndex);
 
+                    User user = loginService.getEffectiveUserByToken(token);
 //                LoginRecord loginRecord = userService.verifyToken(token);
 //                if (loginRecord != null) {
 //                    request.setAttribute("loginRecord", loginRecord);
@@ -67,11 +72,11 @@ public class AuthenticationFilter implements Filter {
 //                        return;
 //                    }
 //                }
+                }
             }
-        }
 
-        try {
             chain.doFilter(request, response);
+
         } catch (SC_UNAUTHORIZED e) {
             ((HttpServletResponse) response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         } catch (SC_FORBIDDEN e) {
@@ -79,7 +84,10 @@ public class AuthenticationFilter implements Filter {
         } catch (CustomException e) {
             ((HttpServletResponse) response).setStatus(HttpServletResponse.SC_FORBIDDEN);
         } catch (Exception e) {
-            ((HttpServletResponse) response).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            if (((HttpServletResponse) response).getStatus() == HttpServletResponse.SC_OK) {
+                ((HttpServletResponse) response).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            }
+            return;
         }
     }
 
