@@ -27,24 +27,6 @@ public class ConsignmentNote extends BaseEntity {
     private String station;
     public String articleNumber;
     public Timestamp consignmentDate;
-    public String shippersAddress;
-    public String consigneeAddress;
-
-//    /**
-//     *  TODO 广州查询电话  是否需要
-//     */
-//    public String guangZhouConsultingTel;
-//    /**
-//     * TODO 咨询电话  是否需要
-//     */
-//    public String consultingTel;
-//
-//    /**
-//     * TODO 投诉电话  是否需要
-//     */
-//    public String complaintsTel;
-
-
     public String shippersName;
     public String shippersPhone;
     public String consigneeName;
@@ -85,9 +67,9 @@ public class ConsignmentNote extends BaseEntity {
 
 
     /**
-     * 站点
+     * 站点 必填
      */
-    @Column(name = "station", length = 20)
+    @Column(name = "station", length = 40, nullable = false)
     public String getStation() {
         return station;
     }
@@ -109,9 +91,9 @@ public class ConsignmentNote extends BaseEntity {
     }
 
     /**
-     * 托运日期
+     * 托运日期 必填
      */
-    @Column(name = "consignment_date", columnDefinition = "TIMESTAMP null default null")
+    @Column(name = "consignment_date", columnDefinition = "TIMESTAMP null default null", nullable = false)
     public Timestamp getConsignmentDate() {
         return consignmentDate;
     }
@@ -120,33 +102,9 @@ public class ConsignmentNote extends BaseEntity {
         this.consignmentDate = consignmentDate;
     }
 
-    /**
-     * 发货地址
-     */
-    @Column(name = "shippers_address", length = 50)
-    public String getShippersAddress() {
-        return shippersAddress;
-    }
-
-    public void setShippersAddress(String shippersAddress) {
-        this.shippersAddress = shippersAddress;
-    }
 
     /**
-     * 收货地址
-     */
-    @Column(name = "consignee_address", length = 50)
-    public String getConsigneeAddress() {
-        return consigneeAddress;
-    }
-
-    public void setConsigneeAddress(String consigneeAddress) {
-        this.consigneeAddress = consigneeAddress;
-    }
-
-
-    /**
-     * 托运人姓名
+     * 托运人姓名 必填
      */
     @Column(name = "shippers_name", length = 10)
     public String getShippersName() {
@@ -158,7 +116,7 @@ public class ConsignmentNote extends BaseEntity {
     }
 
     /**
-     * 托运人电话
+     * 托运人电话  必填
      */
     @Column(name = "shippers_phone", length = 15)
     public String getShippersPhone() {
@@ -171,7 +129,7 @@ public class ConsignmentNote extends BaseEntity {
 
 
     /**
-     * 收货人姓名
+     * 收货人姓名 必填
      */
     @Column(name = "consignee_name", length = 10)
     public void setConsigneeName(String consigneeName) {
@@ -183,7 +141,7 @@ public class ConsignmentNote extends BaseEntity {
     }
 
     /**
-     * 收货人电话
+     * 收货人电话 必填
      */
     @Column(name = "consignee_phone", length = 15)
     public String getConsigneePhone() {
@@ -195,9 +153,9 @@ public class ConsignmentNote extends BaseEntity {
     }
 
     /**
-     * 货物名称
+     * 货物名称 必填
      */
-    @Column(name = "goods_name", length = 25)
+    @Column(name = "goods_name", length = 80)
     public String getGoodsName() {
         return goodsName;
     }
@@ -211,7 +169,7 @@ public class ConsignmentNote extends BaseEntity {
     /**
      * 包装
      */
-    @Column(name = "packaging", length = 30)
+    @Column(name = "packaging", length = 100)
     public String getPackaging() {
         return packaging;
     }
@@ -221,7 +179,7 @@ public class ConsignmentNote extends BaseEntity {
     }
 
     /**
-     * 重量
+     * 重量  必填
      */
     @Column(name = "weight", precision = 18, scale = 3, columnDefinition = "decimal(18,3) default 0.000", nullable = false)
     public BigDecimal getWeight() {
@@ -234,9 +192,9 @@ public class ConsignmentNote extends BaseEntity {
 
 
     /**
-     * 体积
+     * 体积  必填
      */
-    @Column(name = "volume", precision = 18, scale = 1, columnDefinition = "decimal(18,2) default 0.0", nullable = false)
+    @Column(name = "volume", precision = 18, scale = 3, columnDefinition = "decimal(18,3) default 0.000", nullable = false)
     public BigDecimal getVolume() {
         return volume;
     }
@@ -246,7 +204,7 @@ public class ConsignmentNote extends BaseEntity {
     }
 
     /**
-     * 件数
+     * 件数 必填
      */
     @Column(name = "number", columnDefinition = "int default 0", nullable = false)
     public Integer getNumber() {
@@ -270,15 +228,16 @@ public class ConsignmentNote extends BaseEntity {
     }
 
     /**
-     * 保费
+     * 保费  = 保险 * 0.005
      */
     @Column(name = "premium", precision = 18, scale = 2, columnDefinition = "decimal(18,2) default 0.00", nullable = false)
     public BigDecimal getPremium() {
         return premium;
     }
 
-    public void setPremium(BigDecimal premium) {
-        this.premium = premium;
+    public void setPremium() {
+        BigDecimal interest = new BigDecimal("0.005");
+        this.premium = getInsurance().multiply(interest);
     }
 
     /**
@@ -342,7 +301,7 @@ public class ConsignmentNote extends BaseEntity {
     }
 
     /**
-     * 合计
+     * 合计  = 计算  保费+月结+回单付+现金+提付+短途运费+代收货款
      */
     @Column(name = "amount", precision = 18, scale = 2, columnDefinition = "decimal(18,2) default 0.00", nullable = false)
     public BigDecimal getAmount() {
@@ -368,7 +327,7 @@ public class ConsignmentNote extends BaseEntity {
     /**
      * 送货地址
      */
-    @Column(name = "delivery_address", length = 30)
+    @Column(name = "delivery_address", length = 80)
     public String getDeliveryAddress() {
         return deliveryAddress;
     }
