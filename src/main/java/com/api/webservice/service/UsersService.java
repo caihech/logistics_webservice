@@ -6,6 +6,7 @@ import com.api.webservice.dao.entity.Login;
 import com.api.webservice.dao.entity.User;
 import com.api.webservice.dao.repository.LoginRepository;
 import com.api.webservice.dao.repository.UserRepository;
+import com.api.webservice.utils.EnumUtils;
 import com.api.webservice.utils.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,30 +48,42 @@ public class UsersService extends BaseService {
      * @return User对象
      */
     public User get(User user, Long id) {
-//        User userRet = userRepository.findOne(id);
-//
-//        if (userRet == null) {
-//            throw new SC_NOT_FOUND();
-//        }
-//
-//        if (user.getId() == userRet.getId() || user.getRole().getId() == EnumUtils.Role.ADMINISTRATOR.key) {
-//            return userRet;
-//        } else {
-//            throw new SC_FORBIDDEN();
-//        }
-        return null;
+
+        User userRet = userRepository.findOne(id);
+        if (userRet == null) {
+            log.error("404 get user is not find.");
+            throw new SC_NOT_FOUND();
+        }
+
+        if (userRet.getUsername().equals(user.getUsername()) == false) {
+            if (user.getRole().getId() != EnumUtils.Role.ADMINISTRATOR.key) {
+                log.error("403 user not permissions.");
+                throw new SC_FORBIDDEN();
+            }
+        }
+
+        return userRet;
     }
 
     /**
      * 添加
      *
-     * @param adminUser User对象
-     * @param user      User对象
+     * @param user User对象
      * @return User对象
      */
     @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
-    public User post(User adminUser, User user) {
-        return null;
+    public User post(User user) {
+
+        User userRet = new User();
+//        try {
+//
+//            userRet.setUsername(user.getUsername());
+//
+//        }catch (Exception e){
+//            log.error(e.getMessage());
+//        }
+
+
 //        //如果公司不存在
 //        if (user.getCompanyUsers() == null || user.getCompanyUsers().size() == 0) {
 //            throw new SC_BAD_REQUEST();
@@ -132,6 +145,7 @@ public class UsersService extends BaseService {
 //        }
 //
 //        return userRet;
+        return null;
     }
 
     /**
@@ -168,6 +182,14 @@ public class UsersService extends BaseService {
 
 
     public boolean delete(long id) {
+
+        User userRet = userRepository.findOne(id);
+        if (userRet == null) {
+            log.error("404 get user is not find.");
+            throw new SC_NOT_FOUND();
+        }
+        userRet.setValid(false);
+        userRepository.save(userRet);
         return true;
     }
 

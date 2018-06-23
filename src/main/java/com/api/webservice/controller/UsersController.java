@@ -49,7 +49,7 @@ public class UsersController extends BaseController {
     @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR, EnumUtils.Role.USER})
     @RequestMapping(value = "/{id}", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.GET)
     public User get(@PathVariable("id") Long id) throws Exception {
-        User user = usersService.get(null, id);
+        User user = usersService.get(this.user, id);
         setHttpResponseStatus(HttpServletResponse.SC_OK);
         return user;
     }
