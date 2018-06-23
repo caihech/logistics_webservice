@@ -54,7 +54,7 @@ public class User extends BaseEntity {
      * @return
      */
     @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "Role_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     @LazyToOne(value = LazyToOneOption.FALSE)
     public Role getRole() {
         return Role;
