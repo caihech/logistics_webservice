@@ -117,17 +117,15 @@ public class LoginService extends BaseService {
             throw new SC_BAD_REQUEST();
         }
 
-
-//
 //        //查询4次 循环4次是否0 系统时间减去最后一次的时间 和 锁定时间 对比 大于 进行下去 小于 退出 409
 //        int failNumber = disableLogin(loginModel.getUsername());
 //        if (failNumber < 0) {
 //            throw new SC_CONFLICT();
 //        }
 //
-//        //4.通过账号密码查询有效用户
-//        User user = userRepository.findByUsernameAndPasswordAndValid(loginModel.getUsername(), CommonUtils.getSha256(loginModel.getPassword()), true);
-//
+        //4.通过账号密码查询有效用户
+ //       User user = userRepository.findByUsernameAndPasswordAndValid(loginModel.getUsername(), CommonUtils.getSha256(loginModel.getPassword()), true);
+
 //        //5.记录登录信息
 //        if (user == null) {
 //            loginRecord.setState(EnumUtils.LoginState.FAILURE.key);

@@ -67,6 +67,43 @@ public class CustomExceptionUtil {
             return HttpServletResponse.SC_CONFLICT;
         }
 
+
+        /**
+         * 450 验证码过期  目前定义5分钟
+         */
+        if (customException instanceof SC_VERIFICATION_CODE_EXPIRED) {
+            return 450;
+        }
+
+        /**
+         * 451 验证码错误
+         */
+        if (customException instanceof SC_VERIFICATION_CODE_ERROR) {
+            return 451;
+        }
+
+        /**
+         * 452 密码错误
+         */
+        if (customException instanceof SC_PASSWORD_ERROR) {
+            return 452;
+        }
+
+        /**
+         * 453 用户被锁定
+         */
+        if (customException instanceof SC_USER_LOCKED) {
+            return 453;
+        }
+
+        /**
+         * 454 用户无效
+         */
+        if (customException instanceof SC_USER_INVALID) {
+            return 454;
+        }
+
+
         /**
          * 500  服务器内部错误
          */

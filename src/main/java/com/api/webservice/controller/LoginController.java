@@ -32,7 +32,7 @@ public class LoginController extends BaseController {
      * @return List
      * @throws Exception 401无效token,403没有权限
      */
-    @UserAnnotation(roles = {EnumUtils.Role.ADMINISTRATOR})
+    @UserAnnotation(roles = {EnumUtils.ROLE.ADMINISTRATOR})
     @RequestMapping(value = "/log", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.GET)
     public List<Login> query() throws Exception {
         List<Login> loginList = loginService.query();
@@ -47,7 +47,7 @@ public class LoginController extends BaseController {
      * @return Empty
      * @throws Exception 401无效token,403没有权限,404不存在
      */
-    @UserAnnotation(roles = {EnumUtils.Role.ADMINISTRATOR})
+    @UserAnnotation(roles = {EnumUtils.ROLE.ADMINISTRATOR})
     @RequestMapping(value = "/log/{id}", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.GET)
     public Login get(@PathVariable("id") Long id) throws Exception {
         Login login = loginService.get(id);

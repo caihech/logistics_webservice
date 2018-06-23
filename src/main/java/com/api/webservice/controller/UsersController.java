@@ -31,7 +31,7 @@ public class UsersController extends BaseController {
      * @return UserList
      * @throws Exception 401无效token,403没有权限
      */
-    @UserAnnotation(roles = {EnumUtils.Role.ADMINISTRATOR})
+    @UserAnnotation(roles = {EnumUtils.ROLE.ADMINISTRATOR})
     @RequestMapping(value = "", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.GET)
     public List<User> query() throws Exception {
         List<User> userList = usersService.query();
@@ -46,7 +46,7 @@ public class UsersController extends BaseController {
      * @return User
      * @throws Exception 401无效token,403没有权限,404不存在
      */
-    @UserAnnotation(roles = {EnumUtils.Role.ADMINISTRATOR, EnumUtils.Role.USER})
+    @UserAnnotation(roles = {EnumUtils.ROLE.ADMINISTRATOR, EnumUtils.ROLE.USER})
     @RequestMapping(value = "/{id}", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.GET)
     public User get(@PathVariable("id") Long id) throws Exception {
         User user = usersService.get(null, id);
@@ -60,7 +60,7 @@ public class UsersController extends BaseController {
      * @return User
      * @throws Exception 401无效token,403没有权限
      */
-    @UserAnnotation(roles = {EnumUtils.Role.ADMINISTRATOR})
+    @UserAnnotation(roles = {EnumUtils.ROLE.ADMINISTRATOR})
     @RequestMapping(value = "", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.POST)
     public User post(@RequestBody User user) throws Exception {
         User userRet = usersService.post(user, user);
@@ -75,7 +75,7 @@ public class UsersController extends BaseController {
      * @return User
      * @throws Exception 400参数错误,401无效token,403没有权限
      */
-    @UserAnnotation(roles = {EnumUtils.Role.ADMINISTRATOR})
+    @UserAnnotation(roles = {EnumUtils.ROLE.ADMINISTRATOR})
     @RequestMapping(value = "/{id}", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.PUT)
     public User put(@PathVariable("id") Long id, @RequestBody User user) throws Exception {
         User userRet = null;
@@ -96,7 +96,7 @@ public class UsersController extends BaseController {
      * @param id 主键id
      * @throws Exception 400参数错误,401无效token,403没有权限
      */
-    @UserAnnotation(roles = {EnumUtils.Role.ADMINISTRATOR})
+    @UserAnnotation(roles = {EnumUtils.ROLE.ADMINISTRATOR})
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable("id") Long id) throws Exception {
         usersService.delete(id);

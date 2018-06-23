@@ -62,9 +62,9 @@ public class Login extends BaseEntity {
 
 
     /**
-     * 登录状态码  null = 未使用， 1==成功 ， 0==失败 ， 2==锁定
+     * 登录状态码  0 = 未使用， 1=成功 ， 2=失败 ， 3=锁定
      */
-    @Column(name = "status")
+    @Column(name = "status" , columnDefinition = "int default 0" ,nullable = false)
     public Integer getStatus() {
         return status;
     }

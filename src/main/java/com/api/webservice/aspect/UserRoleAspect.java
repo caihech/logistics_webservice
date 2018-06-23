@@ -38,7 +38,7 @@ public class UserRoleAspect {
         logger.info("****UserRoleAspect.logBeforeAllMethods() : " + joinPoint.getSignature().getName());
         logger.info("userAnnotation " + userAnnotation.roles().length + " " + userAnnotation.roles()[0].name());
 
-        EnumUtils.Role[] roles = userAnnotation.roles();
+        EnumUtils.ROLE[] roles = userAnnotation.roles();
 
         if (roles.length > 0) {
             boolean validate = false;
