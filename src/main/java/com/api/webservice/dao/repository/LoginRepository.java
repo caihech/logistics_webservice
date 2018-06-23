@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
  * @date 2018/06/20
  */
 @Repository
-public interface LoginLogRepository extends JpaRepository<Login, Long> {
+public interface LoginRepository extends JpaRepository<Login, Long> {
 
     /**
      * 通过Token查询数据

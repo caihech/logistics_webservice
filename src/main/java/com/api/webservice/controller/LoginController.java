@@ -69,4 +69,17 @@ public class LoginController extends BaseController {
     }
 
 
+    /**
+     * 登录
+     * @param login
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.POST)
+    public Login post(@RequestBody Login login) throws Exception {
+        login = loginService.post(login, CommonUtils.getIp(request));
+        setHttpResponseStatus(HttpServletResponse.SC_CREATED);
+        return login;
+    }
+
 }

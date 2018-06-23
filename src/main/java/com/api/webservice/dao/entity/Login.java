@@ -26,12 +26,12 @@ public class Login extends BaseEntity {
     private String code;
     private String ip;
     private String username;
-    private Integer state;
     private String address;
     private String client;
     private String token;
     private Timestamp tokenExpired;
     private String password;
+    private Integer status;
 
     @Column(name = "code", length = 6)
     public String getCode() {
@@ -60,17 +60,19 @@ public class Login extends BaseEntity {
         this.username = username;
     }
 
+
     /**
-     * 登录状态码  0=未使用， 1==成功 ， 2==失败 ， 3==锁定
+     * 登录状态码  null = 未使用， 1==成功 ， 0==失败 ， 2==锁定
      */
-    @Column(name = "state", columnDefinition = "int default 0 ")
-    public Integer getState() {
-        return state;
+    @Column(name = "status")
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setState(Integer state) {
-        this.state = state;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
+
 
     @Column(name = "address", length = 100)
     public String getAddress() {
