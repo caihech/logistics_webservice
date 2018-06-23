@@ -21,7 +21,7 @@ import java.util.List;
  */
 @CrossOrigin
 @RestController
-@RequestMapping("/Role")
+@RequestMapping("/role")
 public class RoleController extends BaseController {
 
     @Autowired
