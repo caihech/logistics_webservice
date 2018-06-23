@@ -1,9 +1,7 @@
 package com.api.webservice.controller;
 
 import com.api.webservice.annotation.UserAnnotation;
-import com.api.webservice.dao.entity.ConsignmentNoteStatus;
 import com.api.webservice.dao.entity.Role;
-import com.api.webservice.service.ConsignmentNoteStatusService;
 import com.api.webservice.service.RoleService;
 import com.api.webservice.utils.EnumUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +34,6 @@ public class RoleController extends BaseController {
     @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR})
     @RequestMapping(value = "", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.GET)
     public List<Role> query() throws Exception {
-        log.error("Role000000000000");
         List<Role> RoleList = RoleService.query();
         setHttpResponseStatus(HttpServletResponse.SC_OK);
         return RoleList;

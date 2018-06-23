@@ -113,12 +113,8 @@ public class UsersController extends BaseController {
     @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR, EnumUtils.Role.USER})
     @RequestMapping(value = "/token", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.GET)
     public User getUserByToken() throws Exception {
-log.error("ccccccccccccccc");
-        // User user = usersService.get(null, id);
-
-       // User userRet = usersService.getEffectiveUserByToken(u);
         setHttpResponseStatus(HttpServletResponse.SC_OK);
-        return user;
+        return this.user;
     }
 
 

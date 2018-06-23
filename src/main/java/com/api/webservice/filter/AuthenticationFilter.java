@@ -36,7 +36,6 @@ public class AuthenticationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         log.info("doFilter " + request.getRemoteHost() + " " + ((HttpServletRequest) request).getMethod());
-log.error("ffffffffffff");
         try {
 
             String url = ((HttpServletRequest) request).getRequestURI();

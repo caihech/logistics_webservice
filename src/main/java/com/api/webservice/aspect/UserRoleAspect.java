@@ -36,7 +36,6 @@ public class UserRoleAspect {
 
         if (Roles.length > 0) {
 
-
             boolean bCheckRole = false;
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
             User user = (User) request.getAttribute("user");
