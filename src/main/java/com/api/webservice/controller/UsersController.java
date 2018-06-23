@@ -49,7 +49,7 @@ public class UsersController extends BaseController {
     @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR, EnumUtils.Role.USER})
     @RequestMapping(value = "/{id}", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.GET)
     public User get(@PathVariable("id") Long id) throws Exception {
-        User user = usersService.get(this.user, id);
+        User user = usersService.get(this.tokenUser, id);
         setHttpResponseStatus(HttpServletResponse.SC_OK);
         return user;
     }
@@ -63,7 +63,7 @@ public class UsersController extends BaseController {
     @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR})
     @RequestMapping(value = "", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.POST)
     public User post(@RequestBody User user) throws Exception {
-        User userRet = usersService.post(user, user);
+        User userRet = usersService.post(user);
         setHttpResponseStatus(HttpServletResponse.SC_CREATED);
         return userRet;
     }
@@ -75,13 +75,13 @@ public class UsersController extends BaseController {
      * @return User
      * @throws Exception 400参数错误,401无效token,403没有权限
      */
-    @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR})
+    @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR, EnumUtils.Role.USER})
     @RequestMapping(value = "/{id}", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.PUT)
     public User put(@PathVariable("id") Long id, @RequestBody User user) throws Exception {
         User userRet = null;
 
         if (id == user.getId()) {
-            userRet = usersService.put(user);
+            userRet = usersService.put(tokenUser, user);
             setHttpResponseStatus(HttpServletResponse.SC_OK);
         } else {
             setHttpResponseStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -114,7 +114,7 @@ public class UsersController extends BaseController {
     @RequestMapping(value = "/token", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.GET)
     public User getUserByToken() throws Exception {
         setHttpResponseStatus(HttpServletResponse.SC_OK);
-        return this.user;
+        return this.tokenUser;
     }
 
 

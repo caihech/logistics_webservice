@@ -25,7 +25,7 @@ public abstract class BaseController {
     protected HttpServletRequest request;
     protected HttpServletResponse response;
     protected HttpSession session;
-    protected User user;
+    protected User tokenUser;
 
 
     public BaseController() {
@@ -64,7 +64,7 @@ public abstract class BaseController {
         this.request = request;
         this.response = response;
         this.session = request.getSession();
-        this.user = (User) request.getAttribute("user");
+        this.tokenUser = (User) request.getAttribute("user");
     }
 
     /**
@@ -131,6 +131,6 @@ public abstract class BaseController {
      * @return user
      */
     public User getUser() {
-        return user;
+        return tokenUser;
     }
 }

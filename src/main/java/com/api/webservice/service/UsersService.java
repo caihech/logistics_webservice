@@ -3,16 +3,17 @@ package com.api.webservice.service;
 
 import com.api.webservice.config.TomcatConfig;
 import com.api.webservice.dao.entity.Login;
+import com.api.webservice.dao.entity.Role;
 import com.api.webservice.dao.entity.User;
 import com.api.webservice.dao.repository.LoginRepository;
 import com.api.webservice.dao.repository.UserRepository;
+import com.api.webservice.utils.CommonUtils;
 import com.api.webservice.utils.EnumUtils;
 import com.api.webservice.utils.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -41,13 +42,9 @@ public class UsersService extends BaseService {
     }
 
     /**
-     * 查询一条数据
-     *
-     * @param user User对象
-     * @param id   主键id
-     * @return User对象
+     * 获取一条记录
      */
-    public User get(User user, Long id) {
+    public User get(User tokenUser, Long id) {
 
         User userRet = userRepository.findOne(id);
         if (userRet == null) {
@@ -55,8 +52,8 @@ public class UsersService extends BaseService {
             throw new SC_NOT_FOUND();
         }
 
-        if (userRet.getUsername().equals(user.getUsername()) == false) {
-            if (user.getRole().getId() != EnumUtils.Role.ADMINISTRATOR.key) {
+        if (userRet.getId() != tokenUser.getId()) {
+            if (tokenUser.getRole().getId() != EnumUtils.Role.ADMINISTRATOR.key) {
                 log.error("403 user not permissions.");
                 throw new SC_FORBIDDEN();
             }
@@ -74,78 +71,46 @@ public class UsersService extends BaseService {
     @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     public User post(User user) {
 
-        User userRet = new User();
-//        try {
-//
-//            userRet.setUsername(user.getUsername());
-//
-//        }catch (Exception e){
-//            log.error(e.getMessage());
-//        }
+        if (user == null || user.getUsername() == null ||
+                user.getUsername().length() <= 4 ||
+                user.getPassword() == null ||
+                user.getPassword().length() < 6 ||
+                user.getRole() == null ||
+                user.getRole().getId() > 2) {
+            log.error("400 post user param is null.");
+            throw new SC_BAD_REQUEST();
+        }
 
+        User userRet = null;
 
-//        //如果公司不存在
-//        if (user.getCompanyUsers() == null || user.getCompanyUsers().size() == 0) {
-//            throw new SC_BAD_REQUEST();
-//        }
-//
-//        //用户已存在
-//        User userExist = userRepository.findByUsername(user.getUsername());
-//        if (userExist != null) {
-//            throw new SC_CONFLICT();
-//        }
-//
-//        //权限验证
-//        Company company = user.getCompanyUsers().get(0).getCompany();
-//        if (company == null || company.getId() <= 0) {
-//            throw new SC_BAD_REQUEST();
-//        }
-//
-//        boolean bValidCompany = false;
-//
-//        for (CompanyUser companyUser : adminUser.getCompanyUsers()) {
-//            if (companyUser.getAdminPersion().equals(EnumUtils.CompanyUserRole.ADMIN.key) && companyUser.getCompany().getId() == company.getId()) {
-//                bValidCompany = true;
-//                break;
-//            }
-//        }
-//
-//        if (adminUser.getRole().getId() != EnumUtils.Role.ADMINISTRATOR.key && !bValidCompany) {
-//            throw new SC_FORBIDDEN();
-//        }
-//
-//        User userRet = new User();
-//
-//        //事务 创建用户与公司关系
-//        try {
-//            userRet.setUsername(user.getUsername());
-//            userRet.setPassword(CommonUtils.getSha256(user.getPassword()));
-//            userRet.setRole(user.getRole());
-//            userRet.setFullname(user.getFullname());
-//            userRet.setRemark(user.getRemark());
-//            userRet.setValid(true);
-//
-//            userRet = userRepository.saveAndFlush(userRet);
-//
-//            if (userRet == null) {
-//                throw new SC_INTERNAL_SERVER_ERROR();
-//            }
-//
-//            List<CompanyUser> companyUsers = user.getCompanyUsers();
-//
-//            CompanyUser companyUser = new CompanyUser();
-//            companyUser.setCompany(companyUsers.get(0).getCompany());
-//            companyUser.setUser(userRet);
-//            companyUser.setAdminPersion(EnumUtils.CompanyUserRole.EMPLOYEES.key);
-//            companyUser.setContactPersion(0);
-//
-//            companyUserRepository.saveAndFlush(companyUser);
-//        } catch (Exception e) {
-//            throw new SC_INTERNAL_SERVER_ERROR();
-//        }
-//
-//        return userRet;
-        return null;
+        try {
+            userRet = new User();
+            userRet.setUsername(user.getUsername());
+            userRet.setPassword(CommonUtils.getSha256(user.getPassword()));
+            userRet.setMobilephone(user.getMobilephone());
+            userRet.setEmail(user.getEmail());
+            userRet.setFullname(user.getFullname());
+            userRet.setSex(user.getSex());
+            userRet.setPostalCode(user.getPostalCode());
+            userRet.setAddress(user.getAddress());
+            userRet.setFax(user.getFax());
+            userRet.setTelephone(user.getTelephone());
+            userRet.setWechat(user.getWechat());
+            userRet.setWeibo(user.getWeibo());
+            userRet.setBirthday(user.getBirthday());
+            userRet.setValid(true);
+            userRet.setCompanyName(user.getCompanyName());
+            userRet.setRemark(user.getRemark());
+            Role role = new Role();
+            role.setId(user.getRole().getId());
+            userRet.setRole(role);
+
+            userRet = userRepository.saveAndFlush(userRet);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw new SC_INTERNAL_SERVER_ERROR();
+        }
+        return userRet;
     }
 
     /**
@@ -154,30 +119,46 @@ public class UsersService extends BaseService {
      * @param user User对象
      * @return User对象
      */
-    public User put(User user) {
-        return null;
-//        User userRet = userRepository.findOne(user.getId());
-//
-//        userRet.setFullname(user.getFullname());
-//        userRet.setMobilephone(user.getMobilephone());
-//        userRet.setBirthday(user.getBirthday());
-//        userRet.setSex(user.getSex());
-//        userRet.setEmail(user.getEmail());
-//        userRet.setPostalCode(user.getPostalCode());
-//        userRet.setFax(user.getFax());
-//        userRet.setTelephone(user.getTelephone());
-//        userRet.setWechat(user.getWechat());
-//        userRet.setWeibo(user.getWeibo());
-//        userRet.setAddress(user.getAddress());
-//        userRet.setRemark(user.getRemark());
-//
-//        userRet = userRepository.saveAndFlush(userRet);
-//
-//        if (userRet == null) {
-//            throw new SC_INTERNAL_SERVER_ERROR();
-//        }
-//
-//        return userRet;
+    public User put(User tokenUser, User user) {
+
+        if (tokenUser == null || tokenUser.getRole() == null || user == null) {
+            log.error("400  put user param is null.");
+            throw new SC_BAD_REQUEST();
+        }
+        User userRet = userRepository.findOne(user.getId());
+
+        if (userRet == null) {
+            log.error("404  put user not find.");
+            throw new SC_BAD_REQUEST();
+        }
+
+        if (user.getId() != tokenUser.getId()) {
+            if (tokenUser.getRole().getId() != EnumUtils.Role.ADMINISTRATOR.key) {
+                log.error("403  put user role not permissions.");
+                throw new SC_BAD_REQUEST();
+            }
+        }
+
+        userRet.setFullname(user.getFullname());
+        userRet.setMobilephone(user.getMobilephone());
+        userRet.setBirthday(user.getBirthday());
+        userRet.setSex(user.getSex());
+        userRet.setEmail(user.getEmail());
+        userRet.setPostalCode(user.getPostalCode());
+        userRet.setFax(user.getFax());
+        userRet.setTelephone(user.getTelephone());
+        userRet.setWechat(user.getWechat());
+        userRet.setWeibo(user.getWeibo());
+        userRet.setAddress(user.getAddress());
+        userRet.setRemark(user.getRemark());
+        userRet.setCompanyName(user.getCompanyName());
+        userRet = userRepository.saveAndFlush(userRet);
+
+        if (userRet == null) {
+            throw new SC_INTERNAL_SERVER_ERROR();
+        }
+
+        return userRet;
     }
 
 
