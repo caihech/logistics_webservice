@@ -2,7 +2,10 @@ package com.api.webservice.dao.repository;
 
 import com.api.webservice.dao.entity.Login;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.sql.Timestamp;
 
 
 /**
@@ -14,12 +17,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LoginRepository extends JpaRepository<Login, Long> {
 
-    /**
-     * 通过Token查询数据
-     *
-     * @param token
-     * @return
-     */
-    Login findByToken(String token);
+    @Query(value = "select * from login where token =?1 and status =1 and token_expired > now()", nativeQuery = true)
+    Login findByValidToken(String token);
 
 }

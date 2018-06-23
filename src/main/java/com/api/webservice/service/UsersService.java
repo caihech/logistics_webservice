@@ -2,10 +2,11 @@ package com.api.webservice.service;
 
 
 import com.api.webservice.config.TomcatConfig;
+import com.api.webservice.dao.entity.Login;
 import com.api.webservice.dao.entity.User;
+import com.api.webservice.dao.repository.LoginRepository;
 import com.api.webservice.dao.repository.UserRepository;
-import com.api.webservice.utils.exception.SC_FORBIDDEN;
-import com.api.webservice.utils.exception.SC_NOT_FOUND;
+import com.api.webservice.utils.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,8 @@ public class UsersService extends BaseService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private LoginRepository loginRepository;
     @Autowired
     private TomcatConfig systemConfig;
 
@@ -166,6 +169,35 @@ public class UsersService extends BaseService {
 
     public boolean delete(long id) {
         return true;
+    }
+
+
+    /**
+     * 通过有效Token查询用户
+     *
+     * @param token
+     * @return
+     */
+    public User getEffectiveUserByToken(String token) {
+
+        Login login = loginRepository.findByValidToken(token);
+        if (login == null) {
+            log.error("401 Token " + token + " 无效");
+            throw new SC_UNAUTHORIZED();
+        }
+
+        User user = userRepository.findByUsername(login.getUsername());
+        if (user == null) {
+            log.error("401 token find user is not find.");
+            throw new SC_UNAUTHORIZED();
+        }
+
+        if (user.isValid() == false) {
+            log.error("454  查询无效用过");
+            throw new SC_USER_INVALID();
+        }
+
+        return user;
     }
 
 

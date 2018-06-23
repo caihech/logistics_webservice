@@ -14,7 +14,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})
 public @interface UserAnnotation {
-    EnumUtils.ROLE[] roles() default {};
+    EnumUtils.Role[] Roles() default {};
 }
 
 

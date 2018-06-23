@@ -23,8 +23,6 @@ public class AuthenticationFilter implements Filter {
 
     @Autowired
     private UsersService userService;
-    @Autowired
-    private LoginService loginService;
 
     public AuthenticationFilter() {
         this.log = LogManager.getLogger(this.getClass().getName());
@@ -38,11 +36,10 @@ public class AuthenticationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         log.info("doFilter " + request.getRemoteHost() + " " + ((HttpServletRequest) request).getMethod());
-
+log.error("ffffffffffff");
         try {
 
             String url = ((HttpServletRequest) request).getRequestURI();
-
 
             String authorization = ((HttpServletRequest) request).getHeader("Authorization");
             if (authorization != null) {
@@ -52,26 +49,13 @@ public class AuthenticationFilter implements Filter {
                     tokenIndex = tokenIndex + "Token ".length();
                     String token = authorization.substring(tokenIndex);
 
-                    User user = loginService.getEffectiveUserByToken(token);
-//                LoginRecord loginRecord = userService.verifyToken(token);
-//                if (loginRecord != null) {
-//                    request.setAttribute("loginRecord", loginRecord);
-//
-//                    User user = loginRecord.getUser();
-//
-//                    if (user.isValid()) {
-//                        request.setAttribute("user", user);
-//                    } else {
-//                        ((HttpServletResponse) response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//                        return;
-//                    }
-//                } else {
-//                    flag = url.contains("/login");
-//                    if (!flag) {
-//                        ((HttpServletResponse) response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//                        return;
-//                    }
-//                }
+                    User user = userService.getEffectiveUserByToken(token);
+                    if (user != null) {
+                        request.setAttribute("user", user);
+                    } else {
+                        ((HttpServletResponse) response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        return;
+                    }
                 }
             }
 

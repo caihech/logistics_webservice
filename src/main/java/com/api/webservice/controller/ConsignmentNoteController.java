@@ -31,7 +31,7 @@ public class ConsignmentNoteController extends BaseController {
      * @return List
      * @throws Exception 401无效token,403没有权限
      */
-    @UserAnnotation(roles = {EnumUtils.ROLE.ADMINISTRATOR})
+    @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR})
     @RequestMapping(value = "", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.GET)
     public List<ConsignmentNote> query() throws Exception {
         List<ConsignmentNote> userList = consignmentNoteService.query();
@@ -46,7 +46,7 @@ public class ConsignmentNoteController extends BaseController {
      * @return Empty
      * @throws Exception 401无效token,403没有权限,404不存在
      */
-    @UserAnnotation(roles = {EnumUtils.ROLE.ADMINISTRATOR, EnumUtils.ROLE.USER})
+    @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR, EnumUtils.Role.USER})
     @RequestMapping(value = "/{id}", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.GET)
     public ConsignmentNote get(@PathVariable("id") Long id) throws Exception {
         ConsignmentNote consignmentNote = consignmentNoteService.get(id);

@@ -33,7 +33,7 @@ public class VehicleController extends BaseController {
      * @return List
      * @throws Exception 401无效token,403没有权限
      */
-    @UserAnnotation(roles = {EnumUtils.ROLE.ADMINISTRATOR})
+    @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR})
     @RequestMapping(value = "", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.GET)
     public List<Vehicle> query() throws Exception {
         List<Vehicle> vehicleStatusList = vehicleService.query();
@@ -48,7 +48,7 @@ public class VehicleController extends BaseController {
      * @return Empty
      * @throws Exception 401无效token,403没有权限,404不存在
      */
-    @UserAnnotation(roles = {EnumUtils.ROLE.ADMINISTRATOR, EnumUtils.ROLE.USER})
+    @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR, EnumUtils.Role.USER})
     @RequestMapping(value = "/{id}", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.GET)
     public Vehicle get(@PathVariable("id") Long id) throws Exception {
         Vehicle vehicle = vehicleService.get(id);

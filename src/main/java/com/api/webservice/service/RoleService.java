@@ -19,7 +19,7 @@ import java.util.List;
 public class RoleService extends BaseService {
 
     @Autowired
-    private RoleRepository roleRepository;
+    private RoleRepository RoleRepository;
 
 
     /**
@@ -28,7 +28,7 @@ public class RoleService extends BaseService {
      * @return list
      */
     public List<Role> query() {
-        return roleRepository.findAll();
+        return RoleRepository.findAll();
     }
 
 
@@ -40,14 +40,14 @@ public class RoleService extends BaseService {
      */
     public Role get(Long id) {
 
-        Role role = roleRepository.findOne(id);
+        Role Role = RoleRepository.findOne(id);
 
-        if (role == null) {
-            log.error("404 role is not find.");
+        if (Role == null) {
+            log.error("404 Role is not find.");
             throw new SC_NOT_FOUND();
         }
 
-        return role;
+        return Role;
     }
 
 

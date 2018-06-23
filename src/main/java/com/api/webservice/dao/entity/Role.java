@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Component
 @Entity
-@Table(name = "role")
+@Table(name = "Role")
 @JsonIdentityInfo(generator = JSOGGenerator.class)
 public class Role extends BaseEntity {
 
@@ -56,7 +56,7 @@ public class Role extends BaseEntity {
      * User list
      */
     @JsonIgnore
-    @OneToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "role")
+    @OneToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "Role")
     @LazyCollection(value = LazyCollectionOption.EXTRA)
     public List<User> getUsers() {
         return users;

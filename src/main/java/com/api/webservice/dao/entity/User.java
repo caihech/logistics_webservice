@@ -27,7 +27,7 @@ import java.util.List;
 @Table(name = "user")
 @JsonIdentityInfo(generator = JSOGGenerator.class)
 public class User extends BaseEntity {
-    private Role role;
+    private Role Role;
     private String username;
     private String password;
     private String mobilephone;
@@ -49,19 +49,19 @@ public class User extends BaseEntity {
 
 
     /**
-     * fk_role_id
+     * fk_Role_id
      *
      * @return
      */
     @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "Role_id", referencedColumnName = "id", nullable = false)
     @LazyToOne(value = LazyToOneOption.FALSE)
     public Role getRole() {
-        return role;
+        return Role;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRole(Role Role) {
+        this.Role = Role;
     }
 
 

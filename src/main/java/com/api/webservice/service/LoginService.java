@@ -136,7 +136,7 @@ public class LoginService extends BaseService {
         if (user == null) {
             //登录失败
             loginRet.setUsername(login.getUsername());
-            loginRet.setStatus(EnumUtils.LOGIN_STATUS.FAILURE.key);
+            loginRet.setStatus(EnumUtils.LoginStatus.FAILURE.key);
             loginRepository.save(loginRet);
             log.error("452 用户密码错误.");
             throw new SC_USER_PASSWORD_ERROR();
@@ -144,19 +144,11 @@ public class LoginService extends BaseService {
 
         //登录成功
         loginRet.setUsername(login.getUsername());
-        loginRet.setStatus(EnumUtils.LOGIN_STATUS.SUCCESS.key);
+        loginRet.setStatus(EnumUtils.LoginStatus.SUCCESS.key);
         Timestamp timestamp = new Timestamp(System.currentTimeMillis() + tokenExpiredTime);
         loginRet.setTokenExpired(timestamp);
         loginRet = loginRepository.save(loginRet);
         return loginRet;
-    }
-
-
-    public User getEffectiveUserByToken(String token) {
-
-        Login login = loginRepository.findByToken(token);
-        //if(loginLog==null||)
-        return null;
     }
 
 }

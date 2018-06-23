@@ -5,20 +5,20 @@ package com.api.webservice.utils;
  */
 public class EnumUtils {
 
-    public enum ROLE {
+    public enum Role {
         USER(1, "用户"),
         ADMINISTRATOR(2, "管理员");
 
         public long key;
         public String values;
 
-        private ROLE(long _key, String _values) {
+        private Role(long _key, String _values) {
             this.key = _key;
             this.values = _values;
         }
     }
 
-    public enum LOGIN_STATUS {
+    public enum LoginStatus {
 
         DEFAULT(0, ""),
         SUCCESS(1, "成功"),
@@ -28,7 +28,7 @@ public class EnumUtils {
         public int key;
         public String values;
 
-        private LOGIN_STATUS(int _key, String _values) {
+        private LoginStatus(int _key, String _values) {
             this.key = _key;
             this.values = _values;
         }

@@ -21,11 +21,11 @@ import java.util.List;
  */
 @CrossOrigin
 @RestController
-@RequestMapping("/role")
+@RequestMapping("/Role")
 public class RoleController extends BaseController {
 
     @Autowired
-    private RoleService roleService;
+    private RoleService RoleService;
 
     /**
      * 查询所有
@@ -33,12 +33,13 @@ public class RoleController extends BaseController {
      * @return List
      * @throws Exception 401无效token,403没有权限
      */
-    @UserAnnotation(roles = {EnumUtils.ROLE.ADMINISTRATOR})
+    @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR})
     @RequestMapping(value = "", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.GET)
     public List<Role> query() throws Exception {
-        List<Role> roleList = roleService.query();
+        log.error("Role000000000000");
+        List<Role> RoleList = RoleService.query();
         setHttpResponseStatus(HttpServletResponse.SC_OK);
-        return roleList;
+        return RoleList;
     }
 
     /**
@@ -48,12 +49,12 @@ public class RoleController extends BaseController {
      * @return Empty
      * @throws Exception 401无效token,403没有权限,404不存在
      */
-    @UserAnnotation(roles = {EnumUtils.ROLE.ADMINISTRATOR, EnumUtils.ROLE.USER})
+    @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR, EnumUtils.Role.USER})
     @RequestMapping(value = "/{id}", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.GET)
     public Role get(@PathVariable("id") Long id) throws Exception {
-        Role role = roleService.get(id);
+        Role Role = RoleService.get(id);
         setHttpResponseStatus(HttpServletResponse.SC_OK);
-        return role;
+        return Role;
     }
 
 }
