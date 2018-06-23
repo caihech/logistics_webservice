@@ -7,8 +7,7 @@ public class EnumUtils {
 
     public enum Role {
         USER(1, "用户"),
-        MEMBER(2, "会员"),
-        ADMINISTRATOR(3, "管理员");
+        ADMINISTRATOR(2, "管理员");
 
         public long key;
         public String values;
@@ -18,4 +17,5 @@ public class EnumUtils {
             this.values = _values;
         }
     }
+
 }
