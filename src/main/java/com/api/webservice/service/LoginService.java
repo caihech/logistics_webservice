@@ -4,10 +4,11 @@ package com.api.webservice.service;
 import com.api.webservice.dao.entity.Login;
 import com.api.webservice.dao.entity.User;
 import com.api.webservice.dao.repository.LoginRepository;
+import com.api.webservice.dao.repository.UserRepository;
+import com.api.webservice.utils.CommonUtils;
+import com.api.webservice.utils.EnumUtils;
 import com.api.webservice.utils.RandomUtil;
-import com.api.webservice.utils.exception.SC_BAD_REQUEST;
-import com.api.webservice.utils.exception.SC_INTERNAL_SERVER_ERROR;
-import com.api.webservice.utils.exception.SC_NOT_FOUND;
+import com.api.webservice.utils.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,13 @@ public class LoginService extends BaseService {
 
     @Autowired
     private LoginRepository loginRepository;
+    @Autowired
+    private UserRepository userRepository;
 
+    //验证码过期 5分钟
+    private long verificationCodeExpiredTime = 300000;
+    //Token 过期时间为 4小时
+    private long tokenExpiredTime = 14400000;
 
     /**
      * 查询所有
@@ -75,12 +82,9 @@ public class LoginService extends BaseService {
             login.setIp(ip);
             login.setCode(randomUtil.getCapitalOrNumber(4));
             login.setClient(client);
-            login.setStatus(null);
+            login.setStatus(0);
             login.setToken(UUID.randomUUID().toString());
-            //TODO 有效时间参数化
-            Timestamp timestamp = new Timestamp(System.currentTimeMillis() + 100000);
-            login.setTokenExpired(timestamp);
-
+            login.setTokenExpired(new Timestamp(System.currentTimeMillis()));
             login = loginRepository.saveAndFlush(login);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -94,67 +98,57 @@ public class LoginService extends BaseService {
     }
 
     /**
-     * 登录
+     * 用户登录
      *
-     * @param _login
-     * @param _ip
+     * @param login
+     * @param ip
      * @return
      */
-    public Login post(Login _login, String _ip) {
-        // 1.检查入参数据结
-        if (_login == null || _login.getUsername() == null || _login.getPassword() == null || _login.getCode() == null || _ip == null || "".equals(_ip)) {
-            log.error("入参数据异常.");
+    public Login post(Login login, String ip) {
+
+        //检查入参数据结
+        if (login == null || login.getUsername() == null || login.getPassword() == null || login.getCode() == null || "".equals(ip)) {
+            log.error("400 入参数据异常.");
             throw new SC_BAD_REQUEST();
         }
 
-        //获取登录信息
-        Login loginSql = loginRepository.findOne(_login.getId());
-        if (loginSql == null || loginSql.getStatus() != null ||
-                System.currentTimeMillis() > loginSql.getTokenExpired().getTime()
-                || _login.getCode().equals(loginSql.getCode()) == false) {
+        //获取登录记录
+        Login loginRet = loginRepository.findOne(login.getId());
 
-            log.error("验证码异常.");
-            throw new SC_BAD_REQUEST();
+        if (loginRet == null || loginRet.getStatus() != 0 || login.getCode().equals(loginRet.getCode()) == false) {
+            log.error("451 验证码错误.");
+            throw new SC_VERIFICATION_CODE_ERROR();
         }
 
-//        //查询4次 循环4次是否0 系统时间减去最后一次的时间 和 锁定时间 对比 大于 进行下去 小于 退出 409
-//        int failNumber = disableLogin(loginModel.getUsername());
-//        if (failNumber < 0) {
-//            throw new SC_CONFLICT();
-//        }
-//
-        //4.通过账号密码查询有效用户
- //       User user = userRepository.findByUsernameAndPasswordAndValid(loginModel.getUsername(), CommonUtils.getSha256(loginModel.getPassword()), true);
+        if (System.currentTimeMillis() > (loginRet.getCreateTime().getTime() + verificationCodeExpiredTime)) {
+            log.error("450 验证码已过期.");
+            throw new SC_VERIFICATION_CODE_EXPIRED();
+        }
 
-//        //5.记录登录信息
-//        if (user == null) {
-//            loginRecord.setState(EnumUtils.LoginState.FAILURE.key);
-//            loginRecord.setUsername(loginModel.getUsername());
-//            loginRecord.setTimes(failNumber + 1);
-//
-//            loginRecordRepository.saveAndFlush(loginRecord);
-//        } else {
-//            loginRecord.setState(EnumUtils.LoginState.SUCCESS.key);
-//            loginRecord.setUsername(loginModel.getUsername());
-//            loginRecord.setTimes(failNumber);
-//
-//            if (loginModel.getUdid() != null) {
-//                loginRecord.setUdid(loginModel.getUdid());
-//                Timestamp timestamp = new Timestamp(System.currentTimeMillis() + systemConfig.getTokenExpried() * 1000);
-//                loginRecord.setTokenExpired(timestamp);
-//            }
-//
-//            loginRecord.setUser(user);
-//
-//            loginRecordRepository.saveAndFlush(loginRecord);
-//
-//            ableLogin(loginModel.getUsername());
-//        }
-//
-//        //删除数据
-//        loginRecordRepository.deleteStateAndUsernameIsNull(ip);
-//
-        return null;
+        //TODO 连续登录错误锁定用户
+
+
+        //查询用户
+        User user = userRepository.findByUsernameAndPasswordAndValid(
+                login.getUsername(),
+                CommonUtils.getSha256(login.getPassword()), true);
+
+        if (user == null) {
+            //登录失败
+            loginRet.setUsername(login.getUsername());
+            loginRet.setStatus(EnumUtils.LOGIN_STATUS.FAILURE.key);
+            loginRepository.save(loginRet);
+            log.error("452 用户密码错误.");
+            throw new SC_USER_PASSWORD_ERROR();
+        }
+
+        //登录成功
+        loginRet.setUsername(login.getUsername());
+        loginRet.setStatus(EnumUtils.LOGIN_STATUS.SUCCESS.key);
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis() + tokenExpiredTime);
+        loginRet.setTokenExpired(timestamp);
+        loginRet = loginRepository.save(loginRet);
+        return loginRet;
     }
 
 

@@ -85,7 +85,7 @@ public class CustomExceptionUtil {
         /**
          * 452 密码错误
          */
-        if (customException instanceof SC_PASSWORD_ERROR) {
+        if (customException instanceof SC_USER_PASSWORD_ERROR) {
             return 452;
         }
 

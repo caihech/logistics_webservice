@@ -25,10 +25,10 @@ public class EnumUtils {
         FAILURE(2, "失败"),
         LOCK(2, "锁定");
 
-        public long key;
+        public int key;
         public String values;
 
-        private LOGIN_STATUS(long _key, String _values) {
+        private LOGIN_STATUS(int _key, String _values) {
             this.key = _key;
             this.values = _values;
         }
