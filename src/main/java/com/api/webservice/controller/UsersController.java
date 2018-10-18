@@ -124,7 +124,7 @@ public class UsersController extends BaseController {
      *
      * @param userPasswordModel
      * @return
-     * @throws Exception 401无效token,403没有权限
+     * @throws Exception 401无效token,403没有权限 400 ,404,409 ,452
      */
     @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR, EnumUtils.Role.USER})
     @RequestMapping(value = "/password", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.PUT)

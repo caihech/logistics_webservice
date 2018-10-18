@@ -207,6 +207,7 @@ public class UsersService extends BaseService {
 
     /**
      * 修改密码 只能修改自己的密码
+     *
      * @param tokenUser
      * @param userPasswordModel
      * @return
@@ -215,6 +216,11 @@ public class UsersService extends BaseService {
         if (tokenUser == null | userPasswordModel == null) {
             log.error("400 params is null.");
             throw new SC_BAD_REQUEST();
+        }
+
+        if (userPasswordModel.getOldPassword().trim().equals(userPasswordModel.getNewPassword().trim()) == false) {
+            log.error("452 Password inconsistency.");
+            throw new SC_USER_PASSWORD_ERROR();
         }
 
         User user = userRepository.findOne(tokenUser.getId());
