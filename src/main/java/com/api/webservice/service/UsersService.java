@@ -5,6 +5,7 @@ import com.api.webservice.config.TomcatConfig;
 import com.api.webservice.dao.entity.Login;
 import com.api.webservice.dao.entity.Role;
 import com.api.webservice.dao.entity.User;
+import com.api.webservice.dao.model.UserPasswordModel;
 import com.api.webservice.dao.repository.LoginRepository;
 import com.api.webservice.dao.repository.UserRepository;
 import com.api.webservice.utils.CommonUtils;
@@ -198,6 +199,47 @@ public class UsersService extends BaseService {
         if (user.isValid() == false) {
             log.error("454  查询无效用过");
             throw new SC_USER_INVALID();
+        }
+
+        return user;
+    }
+
+
+    /**
+     * 修改密码 只能修改自己的密码
+     * @param tokenUser
+     * @param userPasswordModel
+     * @return
+     */
+    public User changePassword(User tokenUser, UserPasswordModel userPasswordModel) {
+        if (tokenUser == null | userPasswordModel == null) {
+            log.error("400 params is null.");
+            throw new SC_BAD_REQUEST();
+        }
+
+        User user = userRepository.findOne(tokenUser.getId());
+
+        if (user == null) {
+            log.error("404 user is not find.");
+            throw new SC_NOT_FOUND();
+        }
+
+        String userPassword = CommonUtils.getSha256(userPasswordModel.getOldPassword());
+
+        //判断旧密码是否一致
+        if (!user.getPassword().trim().equals(userPassword.trim())) {
+            log.error("409 Password check failed.");
+            throw new SC_CONFLICT();
+        }
+
+        //赋值
+        user.setPassword(userPassword.trim());
+
+        user = userRepository.saveAndFlush(user);
+
+        if (user == null) {
+            log.error("500 user save sql is error.");
+            throw new SC_INTERNAL_SERVER_ERROR();
         }
 
         return user;

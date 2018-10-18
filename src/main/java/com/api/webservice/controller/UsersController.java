@@ -2,6 +2,7 @@ package com.api.webservice.controller;
 
 import com.api.webservice.annotation.UserAnnotation;
 import com.api.webservice.dao.entity.User;
+import com.api.webservice.dao.model.UserPasswordModel;
 import com.api.webservice.service.UsersService;
 import com.api.webservice.utils.EnumUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,6 +116,27 @@ public class UsersController extends BaseController {
     public User getUserByToken() throws Exception {
         setHttpResponseStatus(HttpServletResponse.SC_OK);
         return this.tokenUser;
+    }
+
+
+    /**
+     * 修改密码 只能修改当前用户密码
+     *
+     * @param userPasswordModel
+     * @return
+     * @throws Exception 401无效token,403没有权限
+     */
+    @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR, EnumUtils.Role.USER})
+    @RequestMapping(value = "/password", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.PUT)
+    public User changePassword(@RequestBody UserPasswordModel userPasswordModel) throws Exception {
+        User userRet = null;
+        if (super.tokenUser == null) {
+            setHttpResponseStatus(HttpServletResponse.SC_FORBIDDEN);
+        } else {
+            userRet = usersService.changePassword(super.tokenUser, userPasswordModel);
+            setHttpResponseStatus(HttpServletResponse.SC_OK);
+        }
+        return userRet;
     }
 
 
