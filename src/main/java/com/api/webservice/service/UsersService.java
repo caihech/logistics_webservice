@@ -213,12 +213,14 @@ public class UsersService extends BaseService {
      * @return
      */
     public User changePassword(User tokenUser, UserPasswordModel userPasswordModel) {
-        if (tokenUser == null | userPasswordModel == null) {
+
+        if (tokenUser == null | userPasswordModel == null || userPasswordModel.getCurrentPassword() == null || userPasswordModel.getNewPassword() == null ||
+                userPasswordModel.getCurrentPassword().trim().equals("") || userPasswordModel.getNewPassword().trim().equals("")) {
             log.error("400 params is null.");
             throw new SC_BAD_REQUEST();
         }
 
-        if (userPasswordModel.getOldPassword().trim().equals(userPasswordModel.getNewPassword().trim()) == false) {
+        if (userPasswordModel.getCurrentPassword().trim().equals(userPasswordModel.getNewPassword().trim())) {
             log.error("452 Password inconsistency.");
             throw new SC_USER_PASSWORD_ERROR();
         }
@@ -230,16 +232,16 @@ public class UsersService extends BaseService {
             throw new SC_NOT_FOUND();
         }
 
-        String userPassword = CommonUtils.getSha256(userPasswordModel.getOldPassword());
+        String currentPassword = CommonUtils.getSha256(userPasswordModel.getCurrentPassword());
 
         //判断旧密码是否一致
-        if (!user.getPassword().trim().equals(userPassword.trim())) {
+        if (!user.getPassword().trim().equals(currentPassword.trim())) {
             log.error("409 Password check failed.");
             throw new SC_CONFLICT();
         }
 
         //赋值
-        user.setPassword(userPassword.trim());
+        user.setPassword(CommonUtils.getSha256(userPasswordModel.getNewPassword()));
 
         user = userRepository.saveAndFlush(user);
 

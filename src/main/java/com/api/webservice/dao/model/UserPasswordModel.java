@@ -6,9 +6,9 @@ package com.api.webservice.dao.model;
 public class UserPasswordModel {
 
     /**
-     * 旧密码
+     * 当前密码
      */
-    private String oldPassword;
+    private String currentPassword;
 
     /**
      * 新密码
@@ -16,12 +16,12 @@ public class UserPasswordModel {
     private String newPassword;
 
 
-    public String getOldPassword() {
-        return oldPassword;
+    public String getCurrentPassword() {
+        return currentPassword;
     }
 
-    public void setOldPassword(String oldPassword) {
-        this.oldPassword = oldPassword;
+    public void setCurrentPassword(String currentPassword) {
+        this.currentPassword = currentPassword;
     }
 
     public String getNewPassword() {
