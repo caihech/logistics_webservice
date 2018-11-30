@@ -127,6 +127,7 @@ public class LoginService extends BaseService {
 
         //TODO 连续登录错误锁定用户
 
+        String pa=CommonUtils.getSha256(login.getPassword());
 
         //查询用户
         User user = userRepository.findByUsernameAndPasswordAndValid(
