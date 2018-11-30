@@ -27,7 +27,7 @@ import java.util.List;
 @Table(name = "user")
 @JsonIdentityInfo(generator = JSOGGenerator.class)
 public class User extends BaseEntity {
-    private Role Role;
+    private Role role;
     private String username;
     private String password;
     private String mobilephone;
@@ -57,11 +57,11 @@ public class User extends BaseEntity {
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     @LazyToOne(value = LazyToOneOption.FALSE)
     public Role getRole() {
-        return Role;
+        return role;
     }
 
-    public void setRole(Role Role) {
-        this.Role = Role;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
 
