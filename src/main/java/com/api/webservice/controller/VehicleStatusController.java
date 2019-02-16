@@ -50,12 +50,9 @@ public class VehicleStatusController extends BaseController {
     @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR, EnumUtils.Role.USER})
     @RequestMapping(value = "/{id}", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.GET)
     public VehicleStatus get(@PathVariable("id") Long id) throws Exception {
-
-        throw new SC_NOT_FOUND();
-
-//        VehicleStatus vehicleStatus = vehicleStatusService.get(id);
-//        setHttpResponseStatus(HttpServletResponse.SC_OK);
-//        return vehicleStatus;
+        VehicleStatus vehicleStatus = vehicleStatusService.get(id);
+        setHttpResponseStatus(HttpServletResponse.SC_OK);
+        return vehicleStatus;
     }
 
 }
