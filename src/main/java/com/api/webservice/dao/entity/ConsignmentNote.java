@@ -27,6 +27,7 @@ public class ConsignmentNote extends BaseEntity {
     private String station;
     private String articleNumber;
     private Timestamp consignmentDate;
+    private String goodsAddress;
     private String shippersName;
     private String shippersPhone;
     private String consigneeName;
@@ -48,6 +49,12 @@ public class ConsignmentNote extends BaseEntity {
     private String deliveryAddress;
     private String remark;
     private int printCount;
+
+
+    private String consignee;
+    private String idCard;
+    private String consignor;
+
 
     private User user;
     private ConsignmentNoteStatus consignmentNoteStatus;
@@ -88,6 +95,19 @@ public class ConsignmentNote extends BaseEntity {
 
     public void setArticleNumber(String articleNumber) {
         this.articleNumber = articleNumber;
+    }
+
+
+    /**
+     * 到货地址 必填
+     */
+    @Column(name = "goods_address", length = 40, nullable = false)
+    public String getGoodsAddress() {
+        return goodsAddress;
+    }
+
+    public void setGoodsAddress(String goodsAddress) {
+        this.goodsAddress = goodsAddress;
     }
 
     /**
@@ -360,6 +380,42 @@ public class ConsignmentNote extends BaseEntity {
         this.printCount = printCount;
     }
 
+    /**
+     * 提货人
+     */
+    @Column(name = "consignee", length = 10)
+    public String getConsignee() {
+        return consignee;
+    }
+
+    public void setConsignee(String consignee) {
+        this.consignee = consignee;
+    }
+
+    /**
+     * 身份证
+     */
+    @Column(name = "id_card", length = 20)
+    public String getIdCard() {
+        return idCard;
+    }
+
+    public void setIdCard(String idCard) {
+        this.idCard = idCard;
+    }
+
+
+    /**
+     * 发货人
+     */
+    @Column(name = "consignor", length = 10)
+    public String getConsignor() {
+        return consignor;
+    }
+
+    public void setConsignor(String consignor) {
+        this.consignor = consignor;
+    }
 
     /**
      * fk_user_id
