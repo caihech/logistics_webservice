@@ -3,7 +3,10 @@ package com.api.webservice.service;
 
 import com.api.webservice.dao.entity.ConsignmentNote;
 import com.api.webservice.dao.entity.ConsignmentNoteStatus;
+import com.api.webservice.dao.entity.User;
 import com.api.webservice.dao.repository.ConsignmentNoteRepository;
+import com.api.webservice.utils.exception.SC_BAD_REQUEST;
+import com.api.webservice.utils.exception.SC_INTERNAL_SERVER_ERROR;
 import com.api.webservice.utils.exception.SC_NOT_FOUND;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,6 +50,28 @@ public class ConsignmentNoteService extends BaseService {
             throw new SC_NOT_FOUND();
         }
 
+        return consignmentNote;
+    }
+
+
+    public ConsignmentNote post(User user, ConsignmentNote consignmentNote) {
+        if (user == null || consignmentNote == null) {
+            log.error("400,param is null.");
+            throw new SC_BAD_REQUEST();
+        }
+
+        try {
+            ConsignmentNoteStatus consignmentNoteStatus = new ConsignmentNoteStatus();
+            consignmentNoteStatus.setId(1);
+            consignmentNote.setConsignmentNoteStatus(consignmentNoteStatus);
+            consignmentNote.setUser(user);
+            consignmentNote.setVehicle(null);
+            consignmentNote = consignmentNoteRepository.saveAndFlush(consignmentNote);
+
+        } catch (Exception ex) {
+            log.error("500," + ex.getMessage());
+            throw new SC_INTERNAL_SERVER_ERROR();
+        }
         return consignmentNote;
     }
 

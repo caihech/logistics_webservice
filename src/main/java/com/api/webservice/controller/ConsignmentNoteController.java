@@ -54,4 +54,20 @@ public class ConsignmentNoteController extends BaseController {
         return consignmentNote;
     }
 
+
+    /**
+     * 添加
+     *
+     * @param consignmentNote
+     * @return
+     * @throws Exception 401无效token,400 入参数据异常 500 保存异常
+     */
+    @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR, EnumUtils.Role.USER})
+    @RequestMapping(value = "", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.POST)
+    public ConsignmentNote post(@RequestBody ConsignmentNote consignmentNote) throws Exception {
+        ConsignmentNote consignmentNoteRet = consignmentNoteService.post(super.getUser(), consignmentNote);
+        setHttpResponseStatus(HttpServletResponse.SC_CREATED);
+        return consignmentNoteRet;
+    }
+
 }
