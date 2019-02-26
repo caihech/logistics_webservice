@@ -57,8 +57,13 @@ public class ConsignmentNote extends BaseEntity {
 
 
     private User user;
-    private ConsignmentNoteStatus consignmentNoteStatus;
     private Vehicle vehicle;
+
+
+    private Integer check;
+    private String checkUsername;
+    private Timestamp checkDate;
+    private String checkMessage;
 
     /**
      * 订单编号 ，8位 ，唯一约束 ，必填
@@ -435,21 +440,64 @@ public class ConsignmentNote extends BaseEntity {
 
 
     /**
-     * fk_consignment_note_status_id
+     * 校验 0否 1是 如果校验通过，当前信息受保护不可删除变更。没有校验的信息可以删除或者编辑
      *
      * @return
      */
-    @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "consignment_note_status_id", referencedColumnName = "id", nullable = false)
-    @LazyToOne(value = LazyToOneOption.FALSE)
-    public ConsignmentNoteStatus getConsignmentNoteStatus() {
-        return consignmentNoteStatus;
+    @Column(name = "check", columnDefinition = "int default 0 ", nullable = false)
+    public Integer getCheck() {
+        return check;
     }
 
-    public void setConsignmentNoteStatus(ConsignmentNoteStatus consignmentNoteStatus) {
-        this.consignmentNoteStatus = consignmentNoteStatus;
+    public void setCheck(Integer check) {
+        this.check = check;
     }
 
+    /**
+     * 校验人登录账号
+     * TODO 后期可以根据需求移动到单独表
+     *
+     * @return
+     */
+    @Column(name = "check_username", length = 20)
+    public String getCheckUsername() {
+        return checkUsername;
+    }
+
+    public void setCheckUsername(String checkUsername) {
+        this.checkUsername = checkUsername;
+    }
+
+    /**
+     * 校验时间
+     * TODO 后期可以根据需求移动到单独表
+     *
+     * @return
+     */
+    @Column(name = "check_date", columnDefinition = "TIMESTAMP null default null")
+    public Timestamp getCheckDate() {
+        return checkDate;
+    }
+
+    public void setCheckDate(Timestamp checkDate) {
+        this.checkDate = checkDate;
+    }
+
+
+    /**
+     * 校验浏览
+     * TODO 后期可以根据需求移动到单独表
+     *
+     * @return
+     */
+    @Column(name = "check_message", length = 50)
+    public String getCheckMessage() {
+        return checkMessage;
+    }
+
+    public void setCheckMessage(String checkMessage) {
+        this.checkMessage = checkMessage;
+    }
 
     /**
      * fk_vehicle_id

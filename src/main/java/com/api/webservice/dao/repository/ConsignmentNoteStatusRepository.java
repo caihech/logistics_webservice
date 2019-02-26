@@ -1,6 +1,5 @@
 package com.api.webservice.dao.repository;
 
-import com.api.webservice.dao.entity.ConsignmentNoteStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

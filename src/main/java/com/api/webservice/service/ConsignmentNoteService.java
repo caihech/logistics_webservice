@@ -2,7 +2,6 @@ package com.api.webservice.service;
 
 
 import com.api.webservice.dao.entity.ConsignmentNote;
-import com.api.webservice.dao.entity.ConsignmentNoteStatus;
 import com.api.webservice.dao.entity.User;
 import com.api.webservice.dao.repository.ConsignmentNoteRepository;
 import com.api.webservice.utils.exception.SC_BAD_REQUEST;
@@ -61,11 +60,12 @@ public class ConsignmentNoteService extends BaseService {
         }
 
         try {
-            ConsignmentNoteStatus consignmentNoteStatus = new ConsignmentNoteStatus();
-            consignmentNoteStatus.setId(1);
-            consignmentNote.setConsignmentNoteStatus(consignmentNoteStatus);
             consignmentNote.setUser(user);
             consignmentNote.setVehicle(null);
+            consignmentNote.setCheck(0);
+            consignmentNote.setCheckUsername(null);
+            consignmentNote.setCheckDate(null);
+            consignmentNote.setCheckMessage(null);
             consignmentNote = consignmentNoteRepository.saveAndFlush(consignmentNote);
 
         } catch (Exception ex) {
