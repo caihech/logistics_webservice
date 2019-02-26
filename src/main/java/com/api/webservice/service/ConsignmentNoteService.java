@@ -10,6 +10,7 @@ import com.api.webservice.utils.exception.SC_INTERNAL_SERVER_ERROR;
 import com.api.webservice.utils.exception.SC_NOT_FOUND;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -55,6 +56,7 @@ public class ConsignmentNoteService extends BaseService {
     }
 
 
+    @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     public ConsignmentNote post(User user, ConsignmentNote consignmentNote) {
         if (user == null || consignmentNote == null) {
             log.error("400,param is null.");
@@ -62,8 +64,12 @@ public class ConsignmentNoteService extends BaseService {
         }
 
         try {
-
-//            consignmentNote.setOrderNumber();
+            Integer maxId = consignmentNoteRepository.findMaxId();
+            if (maxId == null) {
+                maxId = 0;
+            }
+            maxId += 1;
+            consignmentNote.setOrderNumber(lifeToFill(maxId + "", 8, "0"));
             consignmentNote.setUser(user);
             consignmentNote.setVehicle(null);
             consignmentNote.setCheckStatus(0);
@@ -77,6 +83,25 @@ public class ConsignmentNoteService extends BaseService {
             throw new SC_INTERNAL_SERVER_ERROR();
         }
         return consignmentNote;
+    }
+
+    /**
+     * 左侧填充
+     *
+     * @param values    当前属性 如 5
+     * @param length    填充长度 如 4
+     * @param chatValue 填充符号  如 0
+     * @return 0005
+     */
+    public static String lifeToFill(String values, int length, String chatValue) {
+        if (values.length() >= length) {
+            return values;
+        }
+        String strA = "";
+        for (int i = 0; i < length - values.length(); i++) {
+            strA += chatValue + "";
+        }
+        return strA + values;
     }
 
 

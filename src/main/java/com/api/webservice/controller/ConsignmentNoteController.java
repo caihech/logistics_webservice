@@ -101,7 +101,7 @@ public class ConsignmentNoteController extends BaseController {
      * @throws Exception 400参数错误,401无效token,403没有权限,404没有找到相关信息,500服务保存错误
      */
     @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR, EnumUtils.Role.USER})
-    @RequestMapping(value = "/check/{id}", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.PUT)
+    @RequestMapping(value = "/checkstatus/{id}", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.PUT)
     public ConsignmentNote putCheckStatus(@PathVariable("id") Long id, @RequestBody ConsignmentNote consignmentNote) throws Exception {
         ConsignmentNote consignmentNotetRet = null;
         if (id == consignmentNote.getId()) {

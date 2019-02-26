@@ -2,6 +2,7 @@ package com.api.webservice.dao.repository;
 
 import com.api.webservice.dao.entity.ConsignmentNote;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 
@@ -14,5 +15,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ConsignmentNoteRepository extends JpaRepository<ConsignmentNote, Long> {
 
+    @Query(value = "SELECT MAX(id) FROM consignment_note", nativeQuery = true)
+    Integer findMaxId();
 
 }
