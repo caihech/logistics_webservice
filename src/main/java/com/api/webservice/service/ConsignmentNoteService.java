@@ -11,6 +11,7 @@ import com.api.webservice.utils.exception.SC_NOT_FOUND;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -143,6 +144,48 @@ public class ConsignmentNoteService extends BaseService {
 
         if (consignmentNoteRet == null) {
             throw new SC_INTERNAL_SERVER_ERROR();
+        }
+
+        return consignmentNoteRet;
+    }
+
+
+    /**
+     * put Check Status
+     *
+     * @param tokenUser
+     * @param consignmentNote
+     * @return
+     */
+    public ConsignmentNote putCheckStatus(User tokenUser, ConsignmentNote consignmentNote) {
+
+        if (tokenUser == null || tokenUser.getRole() == null || consignmentNote == null) {
+            log.error("400  put user param is null.");
+            throw new SC_BAD_REQUEST();
+        }
+        ConsignmentNote consignmentNoteRet = consignmentNoteRepository.findOne(consignmentNote.getId());
+
+        if (consignmentNoteRet == null) {
+            log.error("404  put user not find.");
+            throw new SC_BAD_REQUEST();
+        }
+
+        if (consignmentNoteRet.getCheck() == 1) {
+            log.error("403  check == 1  not permissions.");
+            throw new SC_BAD_REQUEST();
+        } else {
+
+            //修改能修改的属性
+            consignmentNoteRet.setCheck(1);
+            consignmentNoteRet.setCheckUsername(tokenUser.getUsername());
+            consignmentNoteRet.setCheckDate(new Timestamp(System.currentTimeMillis()));
+            consignmentNoteRet.setCheckMessage(consignmentNote.getCheckMessage());
+
+            consignmentNoteRet = consignmentNoteRepository.saveAndFlush(consignmentNoteRet);
+
+            if (consignmentNoteRet == null) {
+                throw new SC_INTERNAL_SERVER_ERROR();
+            }
         }
 
         return consignmentNoteRet;

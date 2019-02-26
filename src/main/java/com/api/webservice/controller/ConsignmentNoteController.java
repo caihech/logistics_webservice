@@ -76,7 +76,7 @@ public class ConsignmentNoteController extends BaseController {
      *
      * @param id 主键id
      * @return User
-     * @throws Exception 400参数错误,401无效token,403没有权限 404 ，500
+     * @throws Exception 400参数错误,401无效token,403没有权限,404没有找到相关信息,500服务保存错误
      */
     @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR, EnumUtils.Role.USER})
     @RequestMapping(value = "/{id}", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.PUT)
@@ -84,6 +84,28 @@ public class ConsignmentNoteController extends BaseController {
         ConsignmentNote consignmentNotetRet = null;
         if (id == consignmentNote.getId()) {
             consignmentNotetRet = consignmentNoteService.put(tokenUser, consignmentNote);
+            setHttpResponseStatus(HttpServletResponse.SC_OK);
+        } else {
+            setHttpResponseStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+
+        return consignmentNotetRet;
+    }
+
+
+    /**
+     * 修改 check status
+     *
+     * @param id 主键id
+     * @return User
+     * @throws Exception 400参数错误,401无效token,403没有权限,404没有找到相关信息,500服务保存错误
+     */
+    @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR, EnumUtils.Role.USER})
+    @RequestMapping(value = "/check/{id}", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.PUT)
+    public ConsignmentNote putCheckStatus(@PathVariable("id") Long id, @RequestBody ConsignmentNote consignmentNote) throws Exception {
+        ConsignmentNote consignmentNotetRet = null;
+        if (id == consignmentNote.getId()) {
+            consignmentNotetRet = consignmentNoteService.putCheckStatus(tokenUser, consignmentNote);
             setHttpResponseStatus(HttpServletResponse.SC_OK);
         } else {
             setHttpResponseStatus(HttpServletResponse.SC_BAD_REQUEST);
