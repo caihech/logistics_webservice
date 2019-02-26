@@ -66,7 +66,7 @@ public class ConsignmentNoteService extends BaseService {
 //            consignmentNote.setOrderNumber();
             consignmentNote.setUser(user);
             consignmentNote.setVehicle(null);
-            consignmentNote.setCheck(0);
+            consignmentNote.setCheckStatus(0);
             consignmentNote.setCheckUsername(null);
             consignmentNote.setCheckDate(null);
             consignmentNote.setCheckMessage(null);
@@ -100,7 +100,7 @@ public class ConsignmentNoteService extends BaseService {
             throw new SC_BAD_REQUEST();
         }
 
-        if (consignmentNoteRet.getCheck() == 1) {
+        if (consignmentNoteRet.getCheckStatus() == 1) {
             log.error("403  check == 1  not permissions.");
             throw new SC_BAD_REQUEST();
         }
@@ -170,13 +170,13 @@ public class ConsignmentNoteService extends BaseService {
             throw new SC_BAD_REQUEST();
         }
 
-        if (consignmentNoteRet.getCheck() == 1) {
+        if (consignmentNoteRet.getCheckStatus() == 1) {
             log.error("403  check == 1  not permissions.");
             throw new SC_BAD_REQUEST();
         } else {
 
             //修改能修改的属性
-            consignmentNoteRet.setCheck(1);
+            consignmentNoteRet.setCheckStatus(1);
             consignmentNoteRet.setCheckUsername(tokenUser.getUsername());
             consignmentNoteRet.setCheckDate(new Timestamp(System.currentTimeMillis()));
             consignmentNoteRet.setCheckMessage(consignmentNote.getCheckMessage());
@@ -204,7 +204,7 @@ public class ConsignmentNoteService extends BaseService {
             throw new SC_NOT_FOUND();
         }
 
-        if (consignmentNoteRet.getCheck() == 1) {
+        if (consignmentNoteRet.getCheckStatus() == 1) {
             log.error("403  check is 1  permissions.");
             throw new SC_BAD_REQUEST();
         }

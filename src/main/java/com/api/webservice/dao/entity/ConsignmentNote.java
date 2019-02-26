@@ -60,7 +60,7 @@ public class ConsignmentNote extends BaseEntity {
     private Vehicle vehicle;
 
 
-    private Integer check;
+    private Integer checkStatus;
     private String checkUsername;
     private Timestamp checkDate;
     private String checkMessage;
@@ -439,19 +439,22 @@ public class ConsignmentNote extends BaseEntity {
     }
 
 
+
+
     /**
      * 校验 0否 1是 如果校验通过，当前信息受保护不可删除变更。没有校验的信息可以删除或者编辑
      *
      * @return
      */
-    @Column(name = "check", columnDefinition = "int default 0 ", nullable = false)
-    public Integer getCheck() {
-        return check;
+    @Column(name = "check_status", columnDefinition = "int default 0 ", nullable = false)
+    public Integer getCheckStatus() {
+        return checkStatus;
     }
 
-    public void setCheck(Integer check) {
-        this.check = check;
+    public void setCheckStatus(Integer checkStatus) {
+        this.checkStatus = checkStatus;
     }
+
 
     /**
      * 校验人登录账号
