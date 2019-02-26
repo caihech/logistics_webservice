@@ -65,7 +65,7 @@ public class ConsignmentNoteController extends BaseController {
     @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR, EnumUtils.Role.USER})
     @RequestMapping(value = "", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.POST)
     public ConsignmentNote post(@RequestBody ConsignmentNote consignmentNote) throws Exception {
-        ConsignmentNote consignmentNoteRet = consignmentNoteService.post(super.getUser(), consignmentNote);
+        ConsignmentNote consignmentNoteRet = consignmentNoteService.post(tokenUser, consignmentNote);
         setHttpResponseStatus(HttpServletResponse.SC_CREATED);
         return consignmentNoteRet;
     }
@@ -76,13 +76,12 @@ public class ConsignmentNoteController extends BaseController {
      *
      * @param id 主键id
      * @return User
-     * @throws Exception 400参数错误,401无效token,403没有权限
+     * @throws Exception 400参数错误,401无效token,403没有权限 404 ，500
      */
     @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR, EnumUtils.Role.USER})
     @RequestMapping(value = "/{id}", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.PUT)
     public ConsignmentNote put(@PathVariable("id") Long id, @RequestBody ConsignmentNote consignmentNote) throws Exception {
         ConsignmentNote consignmentNotetRet = null;
-
         if (id == consignmentNote.getId()) {
             consignmentNotetRet = consignmentNoteService.put(tokenUser, consignmentNote);
             setHttpResponseStatus(HttpServletResponse.SC_OK);
@@ -92,5 +91,8 @@ public class ConsignmentNoteController extends BaseController {
 
         return consignmentNotetRet;
     }
+
+
+    
 
 }

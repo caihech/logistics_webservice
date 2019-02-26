@@ -60,6 +60,8 @@ public class ConsignmentNoteService extends BaseService {
         }
 
         try {
+
+//            consignmentNote.setOrderNumber();
             consignmentNote.setUser(user);
             consignmentNote.setVehicle(null);
             consignmentNote.setCheck(0);
@@ -96,27 +98,45 @@ public class ConsignmentNoteService extends BaseService {
             throw new SC_BAD_REQUEST();
         }
 
-//        if (user.getId() != tokenUser.getId()) {
-//            if (tokenUser.getRole().getId() != EnumUtils.Role.ADMINISTRATOR.key) {
-//                log.error("403  put user role not permissions.");
-//                throw new SC_BAD_REQUEST();
-//            }
-//        }
+        if (consignmentNoteRet.getCheck() == 1) {
+            log.error("403  check == 1  not permissions.");
+            throw new SC_BAD_REQUEST();
+        }
 
         //修改能修改的属性
-//        userRet.setFullname(user.getFullname());
-//        userRet.setMobilephone(user.getMobilephone());
-//        userRet.setBirthday(user.getBirthday());
-//        userRet.setSex(user.getSex());
-//        userRet.setEmail(user.getEmail());
-//        userRet.setPostalCode(user.getPostalCode());
-//        userRet.setFax(user.getFax());
-//        userRet.setTelephone(user.getTelephone());
-//        userRet.setWechat(user.getWechat());
-//        userRet.setWeibo(user.getWeibo());
-//        userRet.setAddress(user.getAddress());
-//        userRet.setRemark(user.getRemark());
-//        userRet.setCompanyName(user.getCompanyName());
+        consignmentNoteRet.setStation(consignmentNote.getStation());
+        consignmentNoteRet.setArticleNumber(consignmentNote.getArticleNumber());
+        consignmentNoteRet.setConsignmentDate(consignmentNote.getConsignmentDate());
+        consignmentNoteRet.setGoodsAddress(consignmentNote.getGoodsAddress());
+        consignmentNoteRet.setShippersName(consignmentNote.getShippersName());
+        consignmentNoteRet.setShippersPhone(consignmentNote.getShippersPhone());
+        consignmentNoteRet.setConsigneeName(consignmentNote.getConsigneeName());
+        consignmentNoteRet.setConsigneePhone(consignmentNote.getConsigneePhone());
+        consignmentNoteRet.setGoodsName(consignmentNote.getGoodsName());
+
+        consignmentNoteRet.setPackaging(consignmentNote.getPackaging());
+        consignmentNoteRet.setVolume(consignmentNote.getVolume());
+        consignmentNoteRet.setNumber(consignmentNote.getNumber());
+        consignmentNoteRet.setInsurance(consignmentNote.getInsurance());
+        consignmentNoteRet.setPremium(consignmentNote.getPremium());
+        consignmentNoteRet.setMonthlyStatement(consignmentNote.getMonthlyStatement());
+        consignmentNoteRet.setReceiptPayment(consignmentNote.getReceiptPayment());
+        consignmentNoteRet.setCashPayment(consignmentNote.getCashPayment());
+        consignmentNoteRet.setExtractPayment(consignmentNote.getExtractPayment());
+        consignmentNoteRet.setShortHaulFreight(consignmentNote.getShortHaulFreight());
+        consignmentNoteRet.setAmount(consignmentNote.getAmount());
+        consignmentNoteRet.setCollectionOnDelivery(consignmentNote.getCollectionOnDelivery());
+        consignmentNoteRet.setDeliveryAddress(consignmentNote.getDeliveryAddress());
+        consignmentNoteRet.setRemark(consignmentNote.getRemark());
+
+
+        consignmentNoteRet.setConsignee(consignmentNote.getConsignee());
+        consignmentNoteRet.setIdCard(consignmentNote.getIdCard());
+        consignmentNoteRet.setConsignee(consignmentNote.getConsignee());
+
+        //TODO 暂时不支持更新属性
+        //  consignmentNoteRet.setVehicle();
+
 
         consignmentNoteRet = consignmentNoteRepository.saveAndFlush(consignmentNoteRet);
 
