@@ -4,6 +4,7 @@ package com.api.webservice.service;
 import com.api.webservice.dao.entity.ConsignmentNote;
 import com.api.webservice.dao.entity.User;
 import com.api.webservice.dao.repository.ConsignmentNoteRepository;
+import com.api.webservice.utils.EnumUtils;
 import com.api.webservice.utils.exception.SC_BAD_REQUEST;
 import com.api.webservice.utils.exception.SC_INTERNAL_SERVER_ERROR;
 import com.api.webservice.utils.exception.SC_NOT_FOUND;
@@ -146,5 +147,36 @@ public class ConsignmentNoteService extends BaseService {
 
         return consignmentNoteRet;
     }
+
+
+    public boolean delete(User tokenUser, long id) {
+        if (tokenUser == null) {
+            log.error("400  put user param is null.");
+            throw new SC_BAD_REQUEST();
+        }
+
+        ConsignmentNote consignmentNoteRet = consignmentNoteRepository.findOne(id);
+        if (consignmentNoteRet == null) {
+            log.error("404 get user is not find.");
+            throw new SC_NOT_FOUND();
+        }
+
+        if (consignmentNoteRet.getCheck() == 1) {
+            log.error("403  check is 1  permissions.");
+            throw new SC_BAD_REQUEST();
+        }
+
+        if (tokenUser.getRole().getId() != EnumUtils.Role.ADMINISTRATOR.key &&
+                consignmentNoteRet.getUser().getId() != tokenUser.getId()) {
+            log.error("403  user is num admin and not is create user  permissions.");
+            throw new SC_BAD_REQUEST();
+        }
+
+//        consignmentNoteRet.setVehicle(null);
+//        consignmentNoteRet = consignmentNoteRepository.saveAndFlush(consignmentNoteRet);
+        consignmentNoteRepository.delete(consignmentNoteRet);
+        return true;
+    }
+
 
 }
