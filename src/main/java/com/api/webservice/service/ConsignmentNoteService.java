@@ -75,4 +75,56 @@ public class ConsignmentNoteService extends BaseService {
         return consignmentNote;
     }
 
+
+    /**
+     * 修改
+     *
+     * @param tokenUser
+     * @param consignmentNote
+     * @return
+     */
+    public ConsignmentNote put(User tokenUser, ConsignmentNote consignmentNote) {
+
+        if (tokenUser == null || tokenUser.getRole() == null || consignmentNote == null) {
+            log.error("400  put user param is null.");
+            throw new SC_BAD_REQUEST();
+        }
+        ConsignmentNote consignmentNoteRet = consignmentNoteRepository.findOne(consignmentNote.getId());
+
+        if (consignmentNoteRet == null) {
+            log.error("404  put user not find.");
+            throw new SC_BAD_REQUEST();
+        }
+
+//        if (user.getId() != tokenUser.getId()) {
+//            if (tokenUser.getRole().getId() != EnumUtils.Role.ADMINISTRATOR.key) {
+//                log.error("403  put user role not permissions.");
+//                throw new SC_BAD_REQUEST();
+//            }
+//        }
+
+        //修改能修改的属性
+//        userRet.setFullname(user.getFullname());
+//        userRet.setMobilephone(user.getMobilephone());
+//        userRet.setBirthday(user.getBirthday());
+//        userRet.setSex(user.getSex());
+//        userRet.setEmail(user.getEmail());
+//        userRet.setPostalCode(user.getPostalCode());
+//        userRet.setFax(user.getFax());
+//        userRet.setTelephone(user.getTelephone());
+//        userRet.setWechat(user.getWechat());
+//        userRet.setWeibo(user.getWeibo());
+//        userRet.setAddress(user.getAddress());
+//        userRet.setRemark(user.getRemark());
+//        userRet.setCompanyName(user.getCompanyName());
+
+        consignmentNoteRet = consignmentNoteRepository.saveAndFlush(consignmentNoteRet);
+
+        if (consignmentNoteRet == null) {
+            throw new SC_INTERNAL_SERVER_ERROR();
+        }
+
+        return consignmentNoteRet;
+    }
+
 }
