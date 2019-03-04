@@ -143,6 +143,7 @@ public class ConsignmentNoteService extends BaseService {
 
         consignmentNoteRet.setPackaging(consignmentNote.getPackaging());
         consignmentNoteRet.setVolume(consignmentNote.getVolume());
+        consignmentNoteRet.setWeight(consignmentNote.getWeight());
         consignmentNoteRet.setNumber(consignmentNote.getNumber());
         consignmentNoteRet.setInsurance(consignmentNote.getInsurance());
         consignmentNoteRet.setPremium(consignmentNote.getPremium());
@@ -156,10 +157,9 @@ public class ConsignmentNoteService extends BaseService {
         consignmentNoteRet.setDeliveryAddress(consignmentNote.getDeliveryAddress());
         consignmentNoteRet.setRemark(consignmentNote.getRemark());
 
-
         consignmentNoteRet.setConsignee(consignmentNote.getConsignee());
         consignmentNoteRet.setIdCard(consignmentNote.getIdCard());
-        consignmentNoteRet.setConsignee(consignmentNote.getConsignee());
+        consignmentNoteRet.setConsignor(consignmentNote.getConsignor());
 
         //TODO 暂时不支持更新属性
         //  consignmentNoteRet.setVehicle();
