@@ -61,7 +61,7 @@ dependencies {
     compile('org.lucee:antlr:2.7.7')
 
     //jdbc:driver
-    compile('mysql:mysql-connector-java:5.1.40')
+    compile('mysql:mysql-connector-java:8.0.12')
 
     //spring
     compile('org.springframework:spring-aop:' + springVersion)
