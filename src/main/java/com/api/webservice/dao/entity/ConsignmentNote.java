@@ -118,7 +118,7 @@ public class ConsignmentNote extends BaseEntity {
     /**
      * 托运日期 必填
      */
-    @Column(name = "consignment_date", columnDefinition = "TIMESTAMP null default null", nullable = false)
+    @Column(name = "consignment_date", columnDefinition = "TIMESTAMP null default null")
     public Timestamp getConsignmentDate() {
         return consignmentDate;
     }
