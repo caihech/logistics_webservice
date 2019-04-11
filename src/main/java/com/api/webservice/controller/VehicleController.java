@@ -2,9 +2,7 @@ package com.api.webservice.controller;
 
 import com.api.webservice.annotation.UserAnnotation;
 import com.api.webservice.dao.entity.Vehicle;
-import com.api.webservice.dao.entity.VehicleStatus;
 import com.api.webservice.service.VehicleService;
-import com.api.webservice.service.VehicleStatusService;
 import com.api.webservice.utils.EnumUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.voodoodyne.jackson.jsog.JSOGGenerator;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -33,7 +31,8 @@ public class Vehicle extends BaseEntity {
     private Timestamp startDate;
     private Timestamp endDate;
 
-    private VehicleStatus vehicleStatus;
+    private boolean valid;
+
     private List<ConsignmentNote> consignmentNotes;
 
 
@@ -110,22 +109,19 @@ public class Vehicle extends BaseEntity {
         this.endDate = endDate;
     }
 
+
     /**
-     * fk_vehicle_status_id
-     *
+     * 托运单是否有效 0否 1是 如果为是不可删除
      * @return
      */
-    @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "vehicle_status_id", referencedColumnName = "id", nullable = false)
-    @LazyToOne(value = LazyToOneOption.FALSE)
-    public VehicleStatus getVehicleStatus() {
-        return vehicleStatus;
+    @Column(name = "valid", columnDefinition = "bit default 0 ", nullable = false)
+    public boolean isValid() {
+        return valid;
     }
 
-    public void setVehicleStatus(VehicleStatus vehicleStatus) {
-        this.vehicleStatus = vehicleStatus;
+    public void setValid(boolean valid) {
+        this.valid = valid;
     }
-
 
     /**
      * consignmentNotes_list

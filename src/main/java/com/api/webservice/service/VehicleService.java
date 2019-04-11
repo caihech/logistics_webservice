@@ -2,9 +2,7 @@ package com.api.webservice.service;
 
 
 import com.api.webservice.dao.entity.Vehicle;
-import com.api.webservice.dao.entity.VehicleStatus;
 import com.api.webservice.dao.repository.VehicleRepository;
-import com.api.webservice.dao.repository.VehicleStatusRepository;
 import com.api.webservice.utils.exception.SC_NOT_FOUND;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
