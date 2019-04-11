@@ -60,10 +60,8 @@ public class ConsignmentNote extends BaseEntity {
     private Vehicle vehicle;
 
 
-    private Integer checkStatus;
-    private String checkUsername;
-    private Timestamp checkDate;
-    private String checkMessage;
+    private boolean valid;
+
 
     /**
      * 订单编号 ，8位 ，唯一约束 ，必填
@@ -439,67 +437,17 @@ public class ConsignmentNote extends BaseEntity {
     }
 
 
-
-
     /**
-     * 校验 0否 1是 如果校验通过，当前信息受保护不可删除变更。没有校验的信息可以删除或者编辑
-     *
+     * 托运单是否有效 0否 1是 如果为是不可删除
      * @return
      */
-    @Column(name = "check_status", columnDefinition = "int default 0 ", nullable = false)
-    public Integer getCheckStatus() {
-        return checkStatus;
+    @Column(name = "valid", columnDefinition = "bit default 0 ", nullable = false)
+    public boolean isValid() {
+        return valid;
     }
 
-    public void setCheckStatus(Integer checkStatus) {
-        this.checkStatus = checkStatus;
-    }
-
-
-    /**
-     * 校验人登录账号
-     * TODO 后期可以根据需求移动到单独表
-     *
-     * @return
-     */
-    @Column(name = "check_username", length = 20)
-    public String getCheckUsername() {
-        return checkUsername;
-    }
-
-    public void setCheckUsername(String checkUsername) {
-        this.checkUsername = checkUsername;
-    }
-
-    /**
-     * 校验时间
-     * TODO 后期可以根据需求移动到单独表
-     *
-     * @return
-     */
-    @Column(name = "check_date", columnDefinition = "TIMESTAMP null default null")
-    public Timestamp getCheckDate() {
-        return checkDate;
-    }
-
-    public void setCheckDate(Timestamp checkDate) {
-        this.checkDate = checkDate;
-    }
-
-
-    /**
-     * 校验浏览
-     * TODO 后期可以根据需求移动到单独表
-     *
-     * @return
-     */
-    @Column(name = "check_message", length = 50)
-    public String getCheckMessage() {
-        return checkMessage;
-    }
-
-    public void setCheckMessage(String checkMessage) {
-        this.checkMessage = checkMessage;
+    public void setValid(boolean valid) {
+        this.valid = valid;
     }
 
     /**

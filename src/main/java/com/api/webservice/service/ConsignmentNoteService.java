@@ -4,6 +4,7 @@ package com.api.webservice.service;
 import com.api.webservice.dao.entity.ConsignmentNote;
 import com.api.webservice.dao.entity.User;
 import com.api.webservice.dao.repository.ConsignmentNoteRepository;
+import com.api.webservice.dao.repository.UserRepository;
 import com.api.webservice.utils.EnumUtils;
 import com.api.webservice.utils.exception.SC_BAD_REQUEST;
 import com.api.webservice.utils.exception.SC_INTERNAL_SERVER_ERROR;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -26,6 +26,9 @@ public class ConsignmentNoteService extends BaseService {
 
     @Autowired
     private ConsignmentNoteRepository consignmentNoteRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
 
     /**
@@ -72,10 +75,8 @@ public class ConsignmentNoteService extends BaseService {
             consignmentNote.setOrderNumber(lifeToFill(maxId + "", 8, "0"));
             consignmentNote.setUser(user);
             consignmentNote.setVehicle(null);
-            consignmentNote.setCheckStatus(0);
-            consignmentNote.setCheckUsername(null);
-            consignmentNote.setCheckDate(null);
-            consignmentNote.setCheckMessage(null);
+            consignmentNote.setValid(false);
+
             consignmentNote = consignmentNoteRepository.saveAndFlush(consignmentNote);
 
         } catch (Exception ex) {
@@ -125,8 +126,8 @@ public class ConsignmentNoteService extends BaseService {
             throw new SC_BAD_REQUEST();
         }
 
-        if (consignmentNoteRet.getCheckStatus() == 1) {
-            log.error("403  check == 1  not permissions.");
+        if (consignmentNoteRet.isValid()) {
+            log.error("403  is Valid  not permissions.");
             throw new SC_BAD_REQUEST();
         }
 
@@ -179,40 +180,39 @@ public class ConsignmentNoteService extends BaseService {
      * put Check Status
      *
      * @param tokenUser
-     * @param consignmentNote
+     * @param id
      * @return
      */
-    public ConsignmentNote putCheckStatus(User tokenUser, ConsignmentNote consignmentNote) {
+    public ConsignmentNote putValid(User tokenUser, Long id) {
 
-        if (tokenUser == null || tokenUser.getRole() == null || consignmentNote == null) {
+        if (tokenUser == null || id == null) {
             log.error("400  put user param is null.");
             throw new SC_BAD_REQUEST();
         }
-        ConsignmentNote consignmentNoteRet = consignmentNoteRepository.findOne(consignmentNote.getId());
+
+        tokenUser = userRepository.findOne(tokenUser.getId());
+        if (tokenUser == null || tokenUser.getRole() == null) {
+            log.error("403  user is not permissions.");
+            throw new SC_BAD_REQUEST();
+        }
+
+        ConsignmentNote consignmentNoteRet = consignmentNoteRepository.findOne(id);
 
         if (consignmentNoteRet == null) {
             log.error("404  put user not find.");
             throw new SC_BAD_REQUEST();
         }
 
-        if (consignmentNoteRet.getCheckStatus() == 1) {
+        if (consignmentNoteRet.isValid()) {
             log.error("403  check == 1  not permissions.");
             throw new SC_BAD_REQUEST();
-        } else {
-
-            //修改能修改的属性
-            consignmentNoteRet.setCheckStatus(1);
-            consignmentNoteRet.setCheckUsername(tokenUser.getUsername());
-            consignmentNoteRet.setCheckDate(new Timestamp(System.currentTimeMillis()));
-            consignmentNoteRet.setCheckMessage(consignmentNote.getCheckMessage());
-
-            consignmentNoteRet = consignmentNoteRepository.saveAndFlush(consignmentNoteRet);
-
-            if (consignmentNoteRet == null) {
-                throw new SC_INTERNAL_SERVER_ERROR();
-            }
         }
 
+        consignmentNoteRet.setValid(true);
+        consignmentNoteRet = consignmentNoteRepository.saveAndFlush(consignmentNoteRet);
+        if (consignmentNoteRet == null) {
+            throw new SC_INTERNAL_SERVER_ERROR();
+        }
         return consignmentNoteRet;
     }
 
@@ -229,8 +229,8 @@ public class ConsignmentNoteService extends BaseService {
             throw new SC_NOT_FOUND();
         }
 
-        if (consignmentNoteRet.getCheckStatus() == 1) {
-            log.error("403  check is 1  permissions.");
+        if (consignmentNoteRet.isValid()) {
+            log.error("403  is valid not permissions.");
             throw new SC_BAD_REQUEST();
         }
 
@@ -240,8 +240,6 @@ public class ConsignmentNoteService extends BaseService {
             throw new SC_BAD_REQUEST();
         }
 
-//        consignmentNoteRet.setVehicle(null);
-//        consignmentNoteRet = consignmentNoteRepository.saveAndFlush(consignmentNoteRet);
         consignmentNoteRepository.delete(consignmentNoteRet);
         return true;
     }
