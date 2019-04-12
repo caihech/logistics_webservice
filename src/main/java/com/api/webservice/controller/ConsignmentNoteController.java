@@ -100,9 +100,9 @@ public class ConsignmentNoteController extends BaseController {
      * @return User
      * @throws Exception 400参数错误,401无效token,403没有权限,404没有找到相关信息,500服务保存错误
      */
-    @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR})
+    @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR, EnumUtils.Role.USER})
     @RequestMapping(value = "/valid/{id}", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.PUT)
-    public ConsignmentNote putValid(@PathVariable("id") Long id) throws Exception {
+    public ConsignmentNote putValid(@PathVariable("id") Long id, @RequestBody ConsignmentNote consignmentNote) throws Exception {
         ConsignmentNote consignmentNotetRet = consignmentNoteService.putValid(tokenUser, id);
         setHttpResponseStatus(HttpServletResponse.SC_OK);
         return consignmentNotetRet;
