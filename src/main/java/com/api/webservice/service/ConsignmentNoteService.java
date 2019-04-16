@@ -183,9 +183,9 @@ public class ConsignmentNoteService extends BaseService {
      * @param id
      * @return
      */
-    public ConsignmentNote putValid(User tokenUser, Long id) {
+    public ConsignmentNote putValid(User tokenUser, ConsignmentNote consignmentNote) {
 
-        if (tokenUser == null || id == null) {
+        if (tokenUser == null || consignmentNote == null || consignmentNote.getId() <= 0) {
             log.error("400  put user param is null.");
             throw new SC_BAD_REQUEST();
         }
@@ -196,7 +196,7 @@ public class ConsignmentNoteService extends BaseService {
             throw new SC_BAD_REQUEST();
         }
 
-        ConsignmentNote consignmentNoteRet = consignmentNoteRepository.findOne(id);
+        ConsignmentNote consignmentNoteRet = consignmentNoteRepository.findOne(consignmentNote.getId());
 
         if (consignmentNoteRet == null) {
             log.error("404  put user not find.");

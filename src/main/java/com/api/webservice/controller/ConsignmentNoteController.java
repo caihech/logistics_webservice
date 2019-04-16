@@ -103,9 +103,13 @@ public class ConsignmentNoteController extends BaseController {
     @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR, EnumUtils.Role.USER})
     @RequestMapping(value = "/valid/{id}", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.PUT)
     public ConsignmentNote putValid(@PathVariable("id") Long id, @RequestBody ConsignmentNote consignmentNote) throws Exception {
-        ConsignmentNote consignmentNotetRet = consignmentNoteService.putValid(tokenUser, id);
-        setHttpResponseStatus(HttpServletResponse.SC_OK);
-        return consignmentNotetRet;
+        if (id == consignmentNote.getId()) {
+            consignmentNote = consignmentNoteService.putValid(tokenUser, consignmentNote);
+            setHttpResponseStatus(HttpServletResponse.SC_OK);
+        } else {
+            setHttpResponseStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+        return consignmentNote;
     }
 
 
