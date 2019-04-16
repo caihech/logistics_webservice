@@ -1,9 +1,9 @@
 package com.api.webservice.service;
 
 
-import com.api.webservice.dao.entity.ConsignmentNote;
 import com.api.webservice.dao.entity.User;
 import com.api.webservice.dao.entity.Vehicle;
+import com.api.webservice.dao.repository.UserRepository;
 import com.api.webservice.dao.repository.VehicleRepository;
 import com.api.webservice.utils.exception.SC_BAD_REQUEST;
 import com.api.webservice.utils.exception.SC_INTERNAL_SERVER_ERROR;
@@ -24,6 +24,9 @@ public class VehicleService extends BaseService {
 
     @Autowired
     private VehicleRepository vehicleRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
 
     /**
@@ -109,6 +112,39 @@ public class VehicleService extends BaseService {
             throw new SC_INTERNAL_SERVER_ERROR();
         }
 
+        return vehicleRet;
+    }
+
+    public Vehicle putValid(User tokenUser, Vehicle vehicle) {
+
+        if (tokenUser == null || vehicle == null || vehicle.getId() <= 0) {
+            log.error("400  put user param is null.");
+            throw new SC_BAD_REQUEST();
+        }
+
+        tokenUser = userRepository.findOne(tokenUser.getId());
+        if (tokenUser == null || tokenUser.getRole() == null) {
+            log.error("403  user is not permissions.");
+            throw new SC_BAD_REQUEST();
+        }
+
+        Vehicle vehicleRet = vehicleRepository.findOne(vehicle.getId());
+
+        if (vehicleRet == null) {
+            log.error("404  put user not find.");
+            throw new SC_BAD_REQUEST();
+        }
+
+        if (vehicleRet.isValid()) {
+            log.error("403  check == 1  not permissions.");
+            throw new SC_BAD_REQUEST();
+        }
+
+        vehicleRet.setValid(true);
+        vehicleRet = vehicleRepository.saveAndFlush(vehicleRet);
+        if (vehicleRet == null) {
+            throw new SC_INTERNAL_SERVER_ERROR();
+        }
         return vehicleRet;
     }
 }

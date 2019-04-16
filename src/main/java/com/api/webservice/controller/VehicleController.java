@@ -95,4 +95,25 @@ public class VehicleController extends BaseController {
 
 
 
+    /**
+     * 修改修改车次信息 valid属性
+     *
+     * @param id 主键id
+     * @return User
+     * @throws Exception 400参数错误,401无效token,403没有权限,404没有找到相关信息,500服务保存错误
+     */
+    @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR, EnumUtils.Role.USER})
+    @RequestMapping(value = "/valid/{id}", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.PUT)
+    public Vehicle putValid(@PathVariable("id") Long id, @RequestBody Vehicle vehicle) throws Exception {
+        if (id == vehicle.getId()) {
+            vehicle = vehicleService.putValid(tokenUser, vehicle);
+            setHttpResponseStatus(HttpServletResponse.SC_OK);
+        } else {
+            setHttpResponseStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+        return vehicle;
+    }
+
+
+
 }
