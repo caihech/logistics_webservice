@@ -1,10 +1,12 @@
 package com.api.webservice.service;
 
 
+import com.api.webservice.dao.entity.ConsignmentNote;
 import com.api.webservice.dao.entity.User;
 import com.api.webservice.dao.entity.Vehicle;
 import com.api.webservice.dao.repository.UserRepository;
 import com.api.webservice.dao.repository.VehicleRepository;
+import com.api.webservice.utils.EnumUtils;
 import com.api.webservice.utils.exception.SC_BAD_REQUEST;
 import com.api.webservice.utils.exception.SC_INTERNAL_SERVER_ERROR;
 import com.api.webservice.utils.exception.SC_NOT_FOUND;
@@ -146,5 +148,37 @@ public class VehicleService extends BaseService {
             throw new SC_INTERNAL_SERVER_ERROR();
         }
         return vehicleRet;
+    }
+
+
+    public void delete(User tokenUser, Long id) {
+        if (tokenUser == null) {
+            log.error("400  put user param is null.");
+            throw new SC_BAD_REQUEST();
+        }
+
+        Vehicle vehicleRet = vehicleRepository.findOne(id);
+        if (vehicleRet == null) {
+            log.error("404 get user is not find.");
+            throw new SC_NOT_FOUND();
+        }
+
+        if (vehicleRet.isValid()) {
+            log.error("403  is valid not permissions.");
+            throw new SC_BAD_REQUEST();
+        }
+
+        if (tokenUser.getRole().getId() != EnumUtils.Role.ADMINISTRATOR.key) {
+            log.error("403  user not is admin  permissions.");
+            throw new SC_BAD_REQUEST();
+        }
+
+        if (vehicleRet.getConsignmentNotes() != null && vehicleRet.getConsignmentNotes().size() > 0) {
+            //TODO 事务删除关联数据
+            vehicleRet.setConsignmentNotes(null);
+            vehicleRet = vehicleRepository.saveAndFlush(vehicleRet);
+        }
+
+        vehicleRepository.delete(vehicleRet);
     }
 }

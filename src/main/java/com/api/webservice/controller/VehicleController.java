@@ -115,5 +115,18 @@ public class VehicleController extends BaseController {
     }
 
 
+    /**
+     * 删除
+     *
+     * @param id 主键id
+     * @throws Exception 400参数错误,401无效token,403没有权限
+     */
+    @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR, EnumUtils.Role.USER})
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable("id") Long id) throws Exception {
+        vehicleService.delete(tokenUser, id);
+        setHttpResponseStatus(HttpServletResponse.SC_NO_CONTENT);
+    }
+
 
 }
