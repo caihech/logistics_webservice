@@ -1,6 +1,7 @@
 package com.api.webservice.controller;
 
 import com.api.webservice.annotation.UserAnnotation;
+import com.api.webservice.dao.entity.ConsignmentNote;
 import com.api.webservice.dao.entity.Vehicle;
 import com.api.webservice.service.VehicleService;
 import com.api.webservice.utils.EnumUtils;
@@ -53,5 +54,23 @@ public class VehicleController extends BaseController {
         setHttpResponseStatus(HttpServletResponse.SC_OK);
         return vehicle;
     }
+
+
+
+    /**
+     * 添加车次信息
+     *
+     * @param vehicle
+     * @return
+     * @throws Exception 401无效token,400 入参数据异常 500 保存异常
+     */
+    @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR, EnumUtils.Role.USER})
+    @RequestMapping(value = "", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.POST)
+    public Vehicle post(@RequestBody Vehicle vehicle) throws Exception {
+        Vehicle vehicleRet = vehicleService.post(tokenUser, vehicle);
+        setHttpResponseStatus(HttpServletResponse.SC_CREATED);
+        return vehicleRet;
+    }
+
 
 }

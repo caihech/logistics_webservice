@@ -1,8 +1,11 @@
 package com.api.webservice.service;
 
 
+import com.api.webservice.dao.entity.User;
 import com.api.webservice.dao.entity.Vehicle;
 import com.api.webservice.dao.repository.VehicleRepository;
+import com.api.webservice.utils.exception.SC_BAD_REQUEST;
+import com.api.webservice.utils.exception.SC_INTERNAL_SERVER_ERROR;
 import com.api.webservice.utils.exception.SC_NOT_FOUND;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,4 +54,20 @@ public class VehicleService extends BaseService {
     }
 
 
+    public Vehicle post(User tokenUser, Vehicle vehicle) {
+
+        if (tokenUser == null || vehicle == null) {
+            log.error("400,param is null.");
+            throw new SC_BAD_REQUEST();
+        }
+
+        try {
+            vehicle.setId(0);
+            vehicle = vehicleRepository.saveAndFlush(vehicle);
+        } catch (Exception ex) {
+            log.error("500," + ex.getMessage());
+            throw new SC_INTERNAL_SERVER_ERROR();
+        }
+        return vehicle;
+    }
 }
