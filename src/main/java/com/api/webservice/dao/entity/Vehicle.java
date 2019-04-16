@@ -26,13 +26,12 @@ public class Vehicle extends BaseEntity {
 
     private String licensePlate;
     private String driverName;
-    private String DrivingLicenseNumber;
+    private String drivingLicenseNumber;
     private String driverPhone;
     private Timestamp startDate;
     private Timestamp endDate;
 
     private boolean valid;
-
     private List<ConsignmentNote> consignmentNotes;
 
 
@@ -60,16 +59,17 @@ public class Vehicle extends BaseEntity {
         this.driverName = driverName;
     }
 
+
     /**
      * 驾驶证编号
      */
     @Column(name = "driving_license_number", length = 25)
     public String getDrivingLicenseNumber() {
-        return DrivingLicenseNumber;
+        return drivingLicenseNumber;
     }
 
     public void setDrivingLicenseNumber(String drivingLicenseNumber) {
-        DrivingLicenseNumber = drivingLicenseNumber;
+        this.drivingLicenseNumber = drivingLicenseNumber;
     }
 
 

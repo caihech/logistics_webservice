@@ -13,6 +13,7 @@ import com.api.webservice.utils.exception.SC_NOT_FOUND;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -100,6 +101,7 @@ public class VehicleService extends BaseService {
         //修改能修改的属性
         vehicleRet.setLicensePlate(vehicle.getLicensePlate());
         vehicleRet.setDriverName(vehicle.getDriverName());
+        vehicleRet.setDrivingLicenseNumber(vehicle.getDrivingLicenseNumber());
         vehicleRet.setDriverPhone(vehicle.getDriverPhone());
         vehicleRet.setStartDate(vehicle.getStartDate());
         vehicleRet.setEndDate(vehicle.getEndDate());
