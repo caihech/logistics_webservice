@@ -180,7 +180,7 @@ public class ConsignmentNoteService extends BaseService {
      * put Check Status
      *
      * @param tokenUser
-     * @param id
+     * @param consignmentNote
      * @return
      */
     public ConsignmentNote putValid(User tokenUser, ConsignmentNote consignmentNote) {
@@ -245,4 +245,36 @@ public class ConsignmentNoteService extends BaseService {
     }
 
 
+    public ConsignmentNote putVehicle(User tokenUser, ConsignmentNote consignmentNote) {
+
+        if (tokenUser == null || consignmentNote == null || consignmentNote.getId() <= 0) {
+            log.error("400  put user param is null.");
+            throw new SC_BAD_REQUEST();
+        }
+
+        tokenUser = userRepository.findOne(tokenUser.getId());
+        if (tokenUser == null || tokenUser.getRole() == null) {
+            log.error("403  user is not permissions.");
+            throw new SC_BAD_REQUEST();
+        }
+
+        ConsignmentNote consignmentNoteRet = consignmentNoteRepository.findOne(consignmentNote.getId());
+
+        if (consignmentNoteRet == null) {
+            log.error("404  put user not find.");
+            throw new SC_BAD_REQUEST();
+        }
+
+        if (consignmentNoteRet.isValid() == false) {
+            log.error("403  check == 0  not permissions.");
+            throw new SC_BAD_REQUEST();
+        }
+
+        consignmentNoteRet.setVehicle(consignmentNote.getVehicle());
+        consignmentNoteRet = consignmentNoteRepository.saveAndFlush(consignmentNoteRet);
+        if (consignmentNoteRet == null) {
+            throw new SC_INTERNAL_SERVER_ERROR();
+        }
+        return consignmentNoteRet;
+    }
 }

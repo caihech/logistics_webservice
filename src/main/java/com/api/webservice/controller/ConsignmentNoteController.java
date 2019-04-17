@@ -127,4 +127,24 @@ public class ConsignmentNoteController extends BaseController {
     }
 
 
+    /**
+     * 修改 vehicle
+     *
+     * @param id 主键id
+     * @return User
+     * @throws Exception 400参数错误,401无效token,403没有权限,404没有找到相关信息,500服务保存错误
+     */
+    @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR, EnumUtils.Role.USER})
+    @RequestMapping(value = "/vehicle/{id}", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.PUT)
+    public ConsignmentNote putVehicle(@PathVariable("id") Long id, @RequestBody ConsignmentNote consignmentNote) throws Exception {
+        if (id == consignmentNote.getId()) {
+            consignmentNote = consignmentNoteService.putVehicle(tokenUser, consignmentNote);
+            setHttpResponseStatus(HttpServletResponse.SC_OK);
+        } else {
+            setHttpResponseStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+        return consignmentNote;
+    }
+
+
 }
