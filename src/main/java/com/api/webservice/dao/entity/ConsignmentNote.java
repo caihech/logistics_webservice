@@ -1,6 +1,7 @@
 package com.api.webservice.dao.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.voodoodyne.jackson.jsog.JSOGGenerator;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
@@ -455,6 +456,7 @@ public class ConsignmentNote extends BaseEntity {
      *
      * @return
      */
+    @JsonIgnore
     @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinColumn(name = "vehicle_id", referencedColumnName = "id")
     @LazyToOne(value = LazyToOneOption.FALSE)
