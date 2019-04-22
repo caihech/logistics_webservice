@@ -64,6 +64,9 @@ public class ConsignmentNote extends BaseEntity {
     private boolean valid;
 
 
+    private Integer vehicleId;
+
+
     /**
      * 订单编号 ，8位 ，唯一约束 ，必填
      */
@@ -440,6 +443,7 @@ public class ConsignmentNote extends BaseEntity {
 
     /**
      * 托运单是否有效 0否 1是 如果为是不可删除
+     *
      * @return
      */
     @Column(name = "valid", columnDefinition = "bit default 0 ", nullable = false)
@@ -468,4 +472,17 @@ public class ConsignmentNote extends BaseEntity {
         this.vehicle = vehicle;
     }
 
+
+    @Transient
+    public Integer getVehicleId() {
+        Integer result = 0;
+        if (this.vehicle != null) {
+            result = (int) this.vehicle.getId();
+        }
+        return result;
+    }
+
+    public void setVehicleId(Integer vehicleId) {
+        this.vehicleId = vehicleId;
+    }
 }
