@@ -27,47 +27,10 @@ import java.util.List;
 @Table(name = "user")
 @JsonIdentityInfo(generator = JSOGGenerator.class)
 public class User extends BaseEntity {
-    private Role role;
+
+    //region username  用户名 不可变更 16
     private String username;
-    private String password;
-    private String mobilephone;
-    private String email;
-    private String fullname;
-    private int sex;
-    private String postalCode;
-    private String address;
-    private String fax;
-    private String telephone;
-    private String wechat;
-    private String weibo;
-    private Timestamp birthday;
-    private boolean valid;
-    private String remark;
-    private String companyName;
 
-    private List<ConsignmentNote> consignmentNotes;
-
-
-    /**
-     * fk_Role_id
-     *
-     * @return
-     */
-    @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
-    @LazyToOne(value = LazyToOneOption.FALSE)
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-
-    /**
-     * 用户名 不可变更
-     */
     @Column(name = "username", length = 16, nullable = false, unique = true, updatable = false)
     public String getUsername() {
         return username;
@@ -76,10 +39,11 @@ public class User extends BaseEntity {
     public void setUsername(String username) {
         this.username = username;
     }
+    //endregion
 
-    /**
-     * 密码采用SHA256单向加密
-     */
+    //region password 密码采用SHA256单向加密 64
+    private String password;
+
     @Column(name = "password", length = 64, nullable = false)
     @JsonIgnore
     public String getPassword() {
@@ -90,10 +54,11 @@ public class User extends BaseEntity {
     public void setPassword(String password) {
         this.password = password;
     }
+    //endregion
 
-    /**
-     * 移动电话 todo 后期可以作为登陆
-     */
+    //region mobilephone 移动电话 todo 后期可以作为登陆  32
+    private String mobilephone;
+
     @Column(name = "mobilephone", length = 32)
     public String getMobilephone() {
         return mobilephone;
@@ -102,10 +67,11 @@ public class User extends BaseEntity {
     public void setMobilephone(String mobilephone) {
         this.mobilephone = mobilephone;
     }
+    //endregion
 
-    /**
-     * 电子邮件 todo 后期可以作为登陆
-     */
+    //region email  电子邮件 todo 后期可以作为登陆 64
+    private String email;
+
     @Column(name = "email", length = 64)
     public String getEmail() {
         return email;
@@ -114,10 +80,11 @@ public class User extends BaseEntity {
     public void setEmail(String email) {
         this.email = email;
     }
+    //endregion
 
-    /**
-     * 真名
-     */
+    //region fullname 真名 32
+    private String fullname;
+
     @Column(name = "fullname", length = 32)
     public String getFullname() {
         return fullname;
@@ -126,10 +93,11 @@ public class User extends BaseEntity {
     public void setFullname(String fullname) {
         this.fullname = fullname;
     }
+    //endregion
 
-    /**
-     * 性别 0保密 1男 2女 todo 添加约束
-     */
+    //region sex 性别 0保密 1男 2女
+    private int sex;
+
     @Column(name = "sex", columnDefinition = "int default 0 ", nullable = false)
     public int getSex() {
         return sex;
@@ -138,10 +106,11 @@ public class User extends BaseEntity {
     public void setSex(int sex) {
         this.sex = sex;
     }
+    //endregion
 
-    /**
-     * 邮编
-     */
+    //region postalCode 邮编 16
+    private String postalCode;
+
     @Column(name = "postal_code", length = 16)
     public String getPostalCode() {
         return postalCode;
@@ -150,10 +119,11 @@ public class User extends BaseEntity {
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
+    //endregion
 
-    /**
-     * 通信地址
-     */
+    //region address 通讯地址 256
+    private String address;
+
     @Column(name = "address", length = 256)
     public String getAddress() {
         return address;
@@ -162,10 +132,11 @@ public class User extends BaseEntity {
     public void setAddress(String address) {
         this.address = address;
     }
+    //endregion
 
-    /**
-     * 传真
-     */
+    //region fax 传真 32
+    private String fax;
+
     @Column(name = "fax", length = 32)
     public String getFax() {
         return fax;
@@ -174,10 +145,11 @@ public class User extends BaseEntity {
     public void setFax(String fax) {
         this.fax = fax;
     }
+    //endregion
 
-    /**
-     * 座机
-     */
+    //region telephone 座机号码 32
+    private String telephone;
+
     @Column(name = "telephone", length = 32)
     public String getTelephone() {
         return telephone;
@@ -186,10 +158,11 @@ public class User extends BaseEntity {
     public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
+    //endregion
 
-    /**
-     * 微信
-     */
+    //region wechat 微信 64
+    private String wechat;
+
     @Column(name = "wechat", length = 64)
     public String getWechat() {
         return wechat;
@@ -198,10 +171,11 @@ public class User extends BaseEntity {
     public void setWechat(String wechat) {
         this.wechat = wechat;
     }
+    //endregion
 
-    /**
-     * 微博
-     */
+    //region weibo 微博 128
+    private String weibo;
+
     @Column(name = "weibo", length = 128)
     public String getWeibo() {
         return weibo;
@@ -210,11 +184,11 @@ public class User extends BaseEntity {
     public void setWeibo(String weibo) {
         this.weibo = weibo;
     }
+    //endregion
 
+    //region birthday 生日
+    private Timestamp birthday;
 
-    /**
-     * 生日
-     */
     @Column(name = "birthday", columnDefinition = "TIMESTAMP null default null")
     public Timestamp getBirthday() {
         return birthday;
@@ -223,10 +197,11 @@ public class User extends BaseEntity {
     public void setBirthday(Timestamp birthday) {
         this.birthday = birthday;
     }
+    //endregion
 
-    /**
-     * 有效用户 0否1是
-     */
+    //region valid 是否有效 0否 1是
+    private boolean valid;
+
     @Column(name = "valid", columnDefinition = "bit default 0 ", nullable = false)
     public boolean isValid() {
         return valid;
@@ -235,10 +210,11 @@ public class User extends BaseEntity {
     public void setValid(boolean valid) {
         this.valid = valid;
     }
+    //endregion
 
-    /**
-     * 备注
-     */
+    //region remark 备注 256
+    private String remark;
+
     @Column(name = "remark", length = 256)
     public String getRemark() {
         return remark;
@@ -247,11 +223,11 @@ public class User extends BaseEntity {
     public void setRemark(String remark) {
         this.remark = remark;
     }
+    //endregion
 
+    //region companyName 公司名称 120
+    private String companyName;
 
-    /**
-     * 公司名称
-     */
     @Column(name = "company_name", length = 120)
     public String getCompanyName() {
         return companyName;
@@ -260,10 +236,26 @@ public class User extends BaseEntity {
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
     }
+    //endregion
 
-    /**
-     * ConsignmentNote list
-     */
+    //region role
+    private Role role;
+
+    @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
+    @LazyToOne(value = LazyToOneOption.FALSE)
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+    //endregion
+
+    //region consignmentNotes_list
+    private List<ConsignmentNote> consignmentNotes;
+
     @JsonIgnore
     @OneToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "user")
     @LazyCollection(value = LazyCollectionOption.EXTRA)
@@ -274,5 +266,6 @@ public class User extends BaseEntity {
     public void setConsignmentNotes(List<ConsignmentNote> consignmentNotes) {
         this.consignmentNotes = consignmentNotes;
     }
+    //endregion
 
 }
