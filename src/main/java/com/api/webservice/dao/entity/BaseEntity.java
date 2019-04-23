@@ -13,19 +13,9 @@ import java.sql.Timestamp;
  */
 @MappedSuperclass
 public abstract class BaseEntity {
-    /**
-     * 表格主键Id
-     */
-    private long id;
 
-    /**
-     * 数据第一次创建时间，自动生成，无需传入
-     */
-    private Timestamp createTime;
-    /**
-     * 每次更新此条数据时的记录时间（上一次更新时间），无需传入
-     */
-    private Timestamp updateTime;
+    //region id 主键 唯一
+    private long id;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,6 +27,11 @@ public abstract class BaseEntity {
         this.id = id;
     }
 
+    //endregion
+
+    //region createTime 数据第一次创建时间，自动生成，无需传入
+    private Timestamp createTime;
+
     @Generated(org.hibernate.annotations.GenerationTime.ALWAYS)
     @Column(name = "create_time", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
     public Timestamp getCreateTime() {
@@ -46,6 +41,10 @@ public abstract class BaseEntity {
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
+    //endregion
+
+    //region updateTime 每次更新此条数据时的记录时间（上一次更新时间），无需传入
+    private Timestamp updateTime;
 
     @Generated(org.hibernate.annotations.GenerationTime.ALWAYS)
     @Column(name = "update_time", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP", insertable = false, updatable = false)
@@ -56,4 +55,6 @@ public abstract class BaseEntity {
     public void setUpdateTime(Timestamp updateTime) {
         this.updateTime = updateTime;
     }
+    //endregion
+
 }
