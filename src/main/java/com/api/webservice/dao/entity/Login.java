@@ -23,15 +23,8 @@ import java.sql.Timestamp;
 @JsonIdentityInfo(generator = JSOGGenerator.class)
 public class Login extends BaseEntity {
 
+    //region code 6
     private String code;
-    private String ip;
-    private String username;
-    private String address;
-    private String client;
-    private String token;
-    private Timestamp tokenExpired;
-    private String password;
-    private Integer status;
 
     @Column(name = "code", length = 6)
     public String getCode() {
@@ -41,6 +34,10 @@ public class Login extends BaseEntity {
     public void setCode(String code) {
         this.code = code;
     }
+    //endregion
+
+    //region ip 18
+    private String ip;
 
     @Column(name = "ip", length = 18)
     public String getIp() {
@@ -50,6 +47,10 @@ public class Login extends BaseEntity {
     public void setIp(String ip) {
         this.ip = ip;
     }
+    //endregion
+
+    //region username 50
+    private String username;
 
     @Column(name = "username", length = 50)
     public String getUsername() {
@@ -59,20 +60,10 @@ public class Login extends BaseEntity {
     public void setUsername(String username) {
         this.username = username;
     }
+    //endregion
 
-
-    /**
-     * 登录状态码  0 = 未使用， 1=成功 ， 2=失败 ， 3=锁定
-     */
-    @Column(name = "status" , columnDefinition = "int default 0" ,nullable = false)
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
+    //region address 100
+    private String address;
 
     @Column(name = "address", length = 100)
     public String getAddress() {
@@ -82,6 +73,10 @@ public class Login extends BaseEntity {
     public void setAddress(String address) {
         this.address = address;
     }
+    //endregion
+
+    //region client 300
+    private String client;
 
     @Column(name = "client", length = 300)
     public String getClient() {
@@ -91,6 +86,10 @@ public class Login extends BaseEntity {
     public void setClient(String client) {
         this.client = client;
     }
+    //endregion
+
+    //region token 36
+    private String token;
 
     @Column(name = "token", length = 36, nullable = false, unique = true, updatable = false)
     public String getToken() {
@@ -100,6 +99,10 @@ public class Login extends BaseEntity {
     public void setToken(String token) {
         this.token = token;
     }
+    //endregion
+
+    //region tokenExpired
+    private Timestamp tokenExpired;
 
     @Column(name = "token_expired", columnDefinition = "TIMESTAMP null default null")
     public Timestamp getTokenExpired() {
@@ -109,6 +112,23 @@ public class Login extends BaseEntity {
     public void setTokenExpired(Timestamp tokenExpired) {
         this.tokenExpired = tokenExpired;
     }
+    //endregion
+
+    //region status 登录状态码  0 = 未使用， 1=成功 ， 2=失败 ， 3=锁定
+    private Integer status;
+
+    @Column(name = "status", columnDefinition = "int default 0", nullable = false)
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+    //endregion
+
+    //region password 扩展不保存数据库
+    private String password;
 
     @Transient
     public String getPassword() {
@@ -118,4 +138,6 @@ public class Login extends BaseEntity {
     public void setPassword(String password) {
         this.password = password;
     }
+    //endregion
+
 }
