@@ -24,20 +24,9 @@ import java.util.List;
 @JsonIdentityInfo(generator = JSOGGenerator.class)
 public class Vehicle extends BaseEntity {
 
+    //region licensePlate 牌照 编号50
     private String licensePlate;
-    private String driverName;
-    private String drivingLicenseNumber;
-    private String driverPhone;
-    private Timestamp startDate;
-    private Timestamp endDate;
 
-    private boolean valid;
-    private List<ConsignmentNote> consignmentNotes;
-
-
-    /**
-     * 牌照
-     */
     @Column(name = "license_plate", length = 50, nullable = false)
     public String getLicensePlate() {
         return licensePlate;
@@ -46,10 +35,11 @@ public class Vehicle extends BaseEntity {
     public void setLicensePlate(String licensePlate) {
         this.licensePlate = licensePlate;
     }
+    //endregion
 
-    /**
-     * 司机姓名
-     */
+    //region driverName 司机姓名 15
+    private String driverName;
+
     @Column(name = "driver_name", length = 15)
     public String getDriverName() {
         return driverName;
@@ -58,11 +48,11 @@ public class Vehicle extends BaseEntity {
     public void setDriverName(String driverName) {
         this.driverName = driverName;
     }
+    //endregion
 
+    //region drivingLicenseNumber 驾驶证编号 25
+    private String drivingLicenseNumber;
 
-    /**
-     * 驾驶证编号
-     */
     @Column(name = "driving_license_number", length = 25)
     public String getDrivingLicenseNumber() {
         return drivingLicenseNumber;
@@ -71,11 +61,11 @@ public class Vehicle extends BaseEntity {
     public void setDrivingLicenseNumber(String drivingLicenseNumber) {
         this.drivingLicenseNumber = drivingLicenseNumber;
     }
+    //endregion
 
+    //region driverPhone 司机联系电话 25
+    private String driverPhone;
 
-    /**
-     * 司机联系电话
-     */
     @Column(name = "driver_phone", length = 25)
     public String getDriverPhone() {
         return driverPhone;
@@ -84,10 +74,11 @@ public class Vehicle extends BaseEntity {
     public void setDriverPhone(String driverPhone) {
         this.driverPhone = driverPhone;
     }
+    //endregion
 
-    /**
-     * 发货日期 变更状态是修改
-     */
+    //region startDate 发车日期
+    private Timestamp startDate;
+
     @Column(name = "start_date", columnDefinition = "TIMESTAMP null default null")
     public Timestamp getStartDate() {
         return startDate;
@@ -96,10 +87,11 @@ public class Vehicle extends BaseEntity {
     public void setStartDate(Timestamp startDate) {
         this.startDate = startDate;
     }
+    //endregion
 
-    /**
-     * 收货日期 变更状态修改
-     */
+    //region endDate 到站日期
+    private Timestamp endDate;
+
     @Column(name = "end_date", columnDefinition = "TIMESTAMP null default null")
     public Timestamp getEndDate() {
         return endDate;
@@ -108,12 +100,11 @@ public class Vehicle extends BaseEntity {
     public void setEndDate(Timestamp endDate) {
         this.endDate = endDate;
     }
+    //endregion
 
+    //region valid 托运单是否有效 0否 1是 如果为是不可删除
+    private boolean valid;
 
-    /**
-     * 托运单是否有效 0否 1是 如果为是不可删除
-     * @return
-     */
     @Column(name = "valid", columnDefinition = "bit default 0 ", nullable = false)
     public boolean isValid() {
         return valid;
@@ -122,10 +113,11 @@ public class Vehicle extends BaseEntity {
     public void setValid(boolean valid) {
         this.valid = valid;
     }
+    //endregion
 
-    /**
-     * consignmentNotes_list
-     */
+    //region consignmentNotes_list
+    private List<ConsignmentNote> consignmentNotes;
+
     @JsonInclude
     @OneToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "vehicle")
     @LazyCollection(value = LazyCollectionOption.EXTRA)
@@ -136,5 +128,6 @@ public class Vehicle extends BaseEntity {
     public void setConsignmentNotes(List<ConsignmentNote> consignmentNotes) {
         this.consignmentNotes = consignmentNotes;
     }
+    //endregion
 
 }
