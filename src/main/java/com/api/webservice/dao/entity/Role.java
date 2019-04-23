@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * 角色表
-
+ *
  * @author h.cai
  * @date 2018/06/20
  */
@@ -23,13 +23,9 @@ import java.util.List;
 @JsonIdentityInfo(generator = JSOGGenerator.class)
 public class Role extends BaseEntity {
 
+    //region name 名称 80
     private String name;
-    private String remark;
-    private List<User> users;
 
-    /**
-     * 名称
-     */
     @Column(name = "name", length = 80, nullable = false, unique = true)
     public String getName() {
         return name;
@@ -38,10 +34,11 @@ public class Role extends BaseEntity {
     public void setName(String name) {
         this.name = name;
     }
+    //endregion
 
-    /**
-     * 备注
-     */
+    //region remark 备注 256
+    private String remark;
+
     @Column(name = "remark", length = 256)
     public String getRemark() {
         return remark;
@@ -50,11 +47,11 @@ public class Role extends BaseEntity {
     public void setRemark(String remark) {
         this.remark = remark;
     }
+    //endregion
 
+    //region user_list
+    private List<User> users;
 
-    /**
-     * User list
-     */
     @JsonIgnore
     @OneToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "role")
     @LazyCollection(value = LazyCollectionOption.EXTRA)
@@ -65,5 +62,6 @@ public class Role extends BaseEntity {
     public void setUsers(List<User> users) {
         this.users = users;
     }
+    //endregion
 
 }
