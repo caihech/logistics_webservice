@@ -26,7 +26,6 @@ public abstract class BaseEntity {
     public void setId(long id) {
         this.id = id;
     }
-
     //endregion
 
     //region createTime 数据第一次创建时间，自动生成，无需传入
