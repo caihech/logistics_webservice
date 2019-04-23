@@ -4,16 +4,19 @@ package com.api.webservice.service;
 import com.api.webservice.dao.entity.ConsignmentNote;
 import com.api.webservice.dao.entity.User;
 import com.api.webservice.dao.entity.Vehicle;
+import com.api.webservice.dao.repository.ConsignmentNoteRepository;
 import com.api.webservice.dao.repository.UserRepository;
 import com.api.webservice.dao.repository.VehicleRepository;
 import com.api.webservice.utils.EnumUtils;
 import com.api.webservice.utils.exception.SC_BAD_REQUEST;
+import com.api.webservice.utils.exception.SC_FORBIDDEN;
 import com.api.webservice.utils.exception.SC_INTERNAL_SERVER_ERROR;
 import com.api.webservice.utils.exception.SC_NOT_FOUND;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +30,9 @@ public class VehicleService extends BaseService {
 
     @Autowired
     private VehicleRepository vehicleRepository;
+
+    @Autowired
+    private ConsignmentNoteRepository consignmentNoteRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -182,5 +188,59 @@ public class VehicleService extends BaseService {
         }
 
         vehicleRepository.delete(vehicleRet);
+    }
+
+
+    public Vehicle putConsignmentNotes(User tokenUser, Vehicle vehicle) {
+
+        if (tokenUser == null) {
+            log.error("400  put user param is null.");
+            throw new SC_BAD_REQUEST();
+        }
+
+        if (vehicle == null) {
+            log.error("400  put vehicle param is null.");
+            throw new SC_BAD_REQUEST();
+        }
+
+        if (vehicle.getId() <= 0) {
+            log.error("400 put vehicle.getId<=0.");
+            throw new SC_BAD_REQUEST();
+        }
+
+
+        if (vehicle.getConsignmentNotes() == null || vehicle.getConsignmentNotes().size() <= 0) {
+            log.error("400 put vehicle.getConsignmentNotes is null.");
+            throw new SC_BAD_REQUEST();
+        }
+
+        Vehicle vehicleRet = vehicleRepository.findOne(vehicle.getId());
+        if (vehicleRet == null) {
+            log.error("400 put vehicle.findOne is null.");
+            throw new SC_BAD_REQUEST();
+        }
+
+        if (vehicleRet.isValid()) {
+            log.error("403 put vehicle.isValid is true.");
+            throw new SC_FORBIDDEN();
+        }
+
+
+        List<ConsignmentNote> consignmentNotesList = new ArrayList<>();
+        for (int i = 0; i < vehicle.getConsignmentNotes().size(); i++) {
+
+            ConsignmentNote tempConsignmentNote = consignmentNoteRepository.findOne(vehicle.getConsignmentNotes().get(i).getId());
+            if (tempConsignmentNote != null && tempConsignmentNote.isValid() && tempConsignmentNote.getVehicle() == null) {
+                tempConsignmentNote.setVehicle(vehicle);
+                tempConsignmentNote = consignmentNoteRepository.saveAndFlush(tempConsignmentNote);
+                consignmentNotesList.add(tempConsignmentNote);
+            }
+        }
+
+        vehicleRet.setConsignmentNotes(consignmentNotesList);
+        vehicleRet = vehicleRepository.saveAndFlush(vehicleRet);
+
+        return vehicleRet;
+
     }
 }

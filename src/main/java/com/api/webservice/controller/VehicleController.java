@@ -129,4 +129,27 @@ public class VehicleController extends BaseController {
     }
 
 
+    /**
+     * 车次添加托运单
+     *
+     * @param id 主键id
+     * @return User
+     * @throws Exception 400参数错误,401无效token,403没有权限,404没有找到相关信息,500服务保存错误
+     */
+    @UserAnnotation(Roles = {EnumUtils.Role.ADMINISTRATOR, EnumUtils.Role.USER})
+    @RequestMapping(value = "/consignmentnotes/{id}", produces = {"application/json;charset=UTF-8"}, method = RequestMethod.PUT)
+    public Vehicle putConsignmentNotes(@PathVariable("id") Long id, @RequestBody Vehicle vehicle) throws Exception {
+        Vehicle vehicleRet = null;
+        if (id == vehicle.getId()) {
+            vehicleRet = vehicleService.putConsignmentNotes(tokenUser, vehicle);
+            setHttpResponseStatus(HttpServletResponse.SC_OK);
+        } else {
+            setHttpResponseStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+        return vehicleRet;
+    }
+
+
+
+
 }
