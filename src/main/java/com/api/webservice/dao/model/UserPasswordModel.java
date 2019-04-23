@@ -5,16 +5,8 @@ package com.api.webservice.dao.model;
  */
 public class UserPasswordModel {
 
-    /**
-     * 当前密码
-     */
+    //region currentPassword 当前密码
     private String currentPassword;
-
-    /**
-     * 新密码
-     */
-    private String newPassword;
-
 
     public String getCurrentPassword() {
         return currentPassword;
@@ -23,6 +15,10 @@ public class UserPasswordModel {
     public void setCurrentPassword(String currentPassword) {
         this.currentPassword = currentPassword;
     }
+    //endregion
+
+    //region newPassword 新密码
+    private String newPassword;
 
     public String getNewPassword() {
         return newPassword;
@@ -31,4 +27,5 @@ public class UserPasswordModel {
     public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
     }
+    //endregion
 }
